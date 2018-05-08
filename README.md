@@ -1,12 +1,12 @@
 # term-project
 
 ## Member
->>Jinwoo Jeon
+* Jinwoo Jeon
 
->>Hyunjae Lee
+* Hyunjae Lee
 
->>Hyunjun Joo
+* Hyunjun Joo
 
->>Junyoung Park
+* Junyoung Park
 
->>Sungjae Kim
+* Sungjae Kim
