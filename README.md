@@ -1,6 +1,6 @@
 # term-project
-##CAUCSE 
-##Software Engineering
+## CAUCSE 
+## Software Engineering
 
 member:
 >>Jinwoo Jeon
