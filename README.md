@@ -1,7 +1,6 @@
 # term-project
-## CAUCSE Software Engineering
 
-member:
+## Member
 >>Jinwoo Jeon
 
 >>Hyunjae Lee
