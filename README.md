@@ -1,9 +1,10 @@
 # term-project
-CAUCSE Software Engineering
+##CAUCSE 
+##Software Engineering
 
 member:
-Jinwoo Jeon
-Hyunjae Lee
-Hyunjun Joo
-Junyoung Park
-Sungjae Kim
+>>Jinwoo Jeon
+>>Hyunjae Lee
+>>Hyunjun Joo
+>>Junyoung Park
+>>Sungjae Kim
