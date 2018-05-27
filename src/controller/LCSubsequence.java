@@ -24,37 +24,7 @@ public class LCSubsequence {
 		// read the substring out from the matrix
 		StringBuffer sb = new StringBuffer();
 		
-		for (int x = a.length(), y = b.length(); ;) {
-		        if( x==0 || y==0) { 
-		          if( x == 0 && y == 0) { 
-		            break; 
-		          } 
-		          if( x == 0 ) { 
-		            // add rest of left text 
-		            if (x == result.peek().leftIndex && result.peek().flag == Node.ADD) { 
-		              // already node exist in same left text index 
-		              result.peek().rightIndex = y - 1; 
-		              result.peek().addChar(b.charAt(y - 1)); 
-		            } else { 
-		              result.push(new Node(new StringBuffer(String.valueOf(b.charAt(y - 1))), x, y - 1, Node.ADD)); 
-		            } 
-		            y--; 
-		            continue; 
-		          } 
-		           
-		          if( y == 0 ) { 
-		            // add rest of left text 
-		            if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) { 
-		              // already node exist in same right text index 
-		              result.peek().leftIndex = x - 1; 
-		              result.peek().addChar(a.charAt(x - 1)); 
-		            } else { 
-		              result.push(new Node(new StringBuffer(String.valueOf(a.charAt(x - 1))), x - 1, y, Node.DELETE)); 
-		            } 
-		            x--; 
-		            continue; 
-		          } 
-		        } 
+		for (int x = a.length(), y = b.length(); x != 0 && y != 0;) {
 			if (lengths[x][y] == lengths[x - 1][y]) {
 				// add right text character in node
 				if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) {
