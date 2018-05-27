@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.text.Highlighter;
 import javax.swing.border.EmptyBorder;
 
 import Controller.LCSubsequence;
@@ -33,6 +34,8 @@ public class MainWindow extends JFrame {
 
    public StringBuffer text1;
    public StringBuffer text2;
+   public File		   first_file;
+   public File		   second_file;
    public Boolean      isFirst;
 
    /**
@@ -117,9 +120,11 @@ public class MainWindow extends JFrame {
                   /*****************************************************************************/
                   if(isFirst) {
                      text1    = sb;
+                     first_file = file;
                      isFirst   = false;
                   } else {
                      text2 = sb;
+                     second_file = file;
                      isFirst = true;
                   }
                   /*****************************************************************************/
@@ -127,6 +132,7 @@ public class MainWindow extends JFrame {
                   // TODO Auto-generated catch block
                   e1.printStackTrace();
                }
+               
 
             }
          }
@@ -218,43 +224,39 @@ public class MainWindow extends JFrame {
       contentPane.add(mergePanel);
       contentPane.add(rightEditPanel);
 
-//      btnCmp.addActionListener(new ActionListener() {
-//
-//		@Override
-//		public void actionPerformed(ActionEvent e1) {
-//			
-//			
-//			
-//			Scanner input1;
-//	        Scanner input2;
-//	        
-//	        try {
-//	        	input1 = new Scanner(text1);
-//	        	input2 = new Scanner(text2);
-//	        	
-//	        	while(input1.hasNextLine()) {
-//	        		text1.append(input1.nextLine() + "\r\n");
-//	        	}
-//	        	
-//	        	while(input2.hasNextLine()) {
-//	        		text2.append(input2.nextLine() + "\r\n"); 	
-//	        	}
-//	        } catch(Exception e) {
-//	        	e.printStackTrace(System.out);
-//	        }
-//	        
-//	        
-//	        LCSubsequence l = new LCSubsequence();
-////	        LinkedList<LongestCommonSubsequence.Diff> list = l.diff_main(text1.toString(), text2.toString());
-//	        
-//	        for(Node e : LCSubsequence.getDiff(text1.toString(), text2.toString())) {
-//	            System.out.println(e.toString());
-//	        }
-//			
-//		}
-//    	  
-//    	  
-//      });				//备泅酒流
+      btnCmp.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e1) {
+			
+			Scanner input1;
+	        Scanner input2;
+	        
+	        try {
+	        	input1 = new Scanner(first_file);
+	        	input2 = new Scanner(second_file);
+	        	
+	        	while(input1.hasNextLine()) {
+	        		text1.append(input1.nextLine() + "\r\n");
+	        	}
+	        	
+	        	while(input2.hasNextLine()) {
+	        		text2.append(input2.nextLine() + "\r\n"); 	
+	        	}
+	        } catch(Exception e) {
+	        	e.printStackTrace(System.out);
+	        }
+	        
+	        LCSubsequence l = new LCSubsequence();
+	        
+	        for(Node e : LCSubsequence.getDiff(text1.toString(), text2.toString())) {
+	            System.out.println(e.toString());
+	        }
+			
+		}
+    	  
+    	  
+      });				//备泅酒流
       
    }
 }

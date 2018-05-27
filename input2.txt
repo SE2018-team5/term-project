@@ -5,8 +5,7 @@ People who have cont
 ributed to WinMerge
 ---------------------------------------
 
-Original developer, project admin:
-* Dean Grimm <grimmdp@yahoo.com>
+
 
 Project lead:
 * Christian List <list1974@hotmail.com>
@@ -208,3 +207,4 @@ If your name is missing please email us at:
 winmerge-support@lists.sourceforge.net
 
 Thanks!
+
