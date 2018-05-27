@@ -109,8 +109,8 @@ public class MainWindow extends JFrame {
         btnCmp.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         //merging button
-        JButton btnCpy2Left = new JButton("¡ç Copy to Left");
-        JButton btnCpy2Right = new JButton("Copy to Right ¡æ");
+        JButton btnCpy2Left = new JButton("ï¿½ï¿½ Copy to Left");
+        JButton btnCpy2Right = new JButton("Copy to Right ï¿½ï¿½");
         mergePanel.add(btnCpy2Left);
         btnCpy2Left.setAlignmentX(Component.CENTER_ALIGNMENT);
         mergePanel.add(btnCpy2Right);
