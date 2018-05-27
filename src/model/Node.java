@@ -12,6 +12,11 @@ public class Node {
     
     public StringBuffer context;
     
+    public Node(String context, int flag) {
+    	this.context = new StringBuffer(context);
+        this.flag = flag;
+    }
+    
     public Node(StringBuffer context, int leftIndex, int rightIndex, int flag){
         this.context = context;
         
@@ -39,6 +44,18 @@ public class Node {
 		}
 		
 		return temp.toString();
+    }
+    
+    public boolean equals(Node that) {
+    	if(this == that) {
+    		return true;
+    	}
+    	
+    	if(this.context.equals(that.context) && this.flag == that.flag) {
+    		return true;
+    	}
+    	
+    	return false;
     }
     
 }
