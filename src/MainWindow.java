@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
@@ -25,8 +26,8 @@ import javax.swing.JTextField;
 import javax.swing.text.Highlighter;
 import javax.swing.border.EmptyBorder;
 
-import Controller.LCSubsequence;
-import Model.Node;
+import controller.LCSubsequence;
+import model.Node;
 
 public class MainWindow extends JFrame {
 
@@ -34,8 +35,6 @@ public class MainWindow extends JFrame {
 
    public StringBuffer text1;
    public StringBuffer text2;
-   public File		   first_file;
-   public File		   second_file;
    public Boolean      isFirst;
 
    /**
@@ -120,11 +119,9 @@ public class MainWindow extends JFrame {
                   /*****************************************************************************/
                   if(isFirst) {
                      text1    = sb;
-                     first_file = file;
                      isFirst   = false;
                   } else {
                      text2 = sb;
-                     second_file = file;
                      isFirst = true;
                   }
                   /*****************************************************************************/
@@ -228,35 +225,13 @@ public class MainWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e1) {
-			
-			Scanner input1;
-	        Scanner input2;
-	        
-	        try {
-	        	input1 = new Scanner(first_file);
-	        	input2 = new Scanner(second_file);
-	        	
-	        	while(input1.hasNextLine()) {
-	        		text1.append(input1.nextLine() + "\r\n");
-	        	}
-	        	
-	        	while(input2.hasNextLine()) {
-	        		text2.append(input2.nextLine() + "\r\n"); 	
-	        	}
-	        } catch(Exception e) {
-	        	e.printStackTrace(System.out);
-	        }
-	        
 	        LCSubsequence l = new LCSubsequence();
-	        
-	        for(Node e : LCSubsequence.getDiff(text1.toString(), text2.toString())) {
+	        LinkedList<Node> r = LCSubsequence.getDiff(text1.toString(), text2.toString());
+	        for(Node e : r) {
 	            System.out.println(e.toString());
 	        }
-			
 		}
-    	  
-    	  
-      });				//구현아직
+      });
       
    }
 }
