@@ -1,9 +1,8 @@
 import java.io.File;
-import java.util.LinkedList;
 import java.util.Scanner;
 
-import Controller.LCSubsequence;
-import Model.Node;
+import controller.LCSubsequence;
+import model.Node;
 
 
 public class Main {
