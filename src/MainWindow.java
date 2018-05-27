@@ -104,7 +104,7 @@ public class MainWindow extends JFrame {
          @Override
          public void actionPerformed(ActionEvent e) {
             int result = fileDlg.showOpenDialog(null);
-            if (result == JFileChooser.APPROVE_OPTION) // ÆÄÀÏÀ» ¼±ÅÃÇÏ°í ¿­¾úÀ»¶§ ÀÌº¥Æ®
+            if (result == JFileChooser.APPROVE_OPTION) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®
             {
                try {
                   File file = fileDlg.getSelectedFile();
@@ -115,7 +115,7 @@ public class MainWindow extends JFrame {
                   }
                   
                   editorPane.setText(sb.toString() + "\r\n");
-                  editorPane.setEditable(false); // ¼öÁ¤ ºÒ°¡
+                  editorPane.setEditable(false); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
                   /*****************************************************************************/
                   if(isFirst) {
                      text1    = sb;
@@ -202,8 +202,8 @@ public class MainWindow extends JFrame {
       btnCmp.setAlignmentX(Component.CENTER_ALIGNMENT);
 
       // merging button
-      JButton btnCpy2Left = new JButton("¡ç Copy to Left");
-      JButton btnCpy2Right = new JButton("Copy to Right ¡æ");
+      JButton btnCpy2Left = new JButton("ï¿½ï¿½ Copy to Left");
+      JButton btnCpy2Right = new JButton("Copy to Right ï¿½ï¿½");
       mergePanel.add(btnCpy2Left);
       btnCpy2Left.setAlignmentX(Component.CENTER_ALIGNMENT);
       mergePanel.add(btnCpy2Right);
