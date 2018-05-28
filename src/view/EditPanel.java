@@ -13,6 +13,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 /**
@@ -73,6 +75,7 @@ public class EditPanel extends JPanel{
 	EditPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fileDlg = new JFileChooser();
+		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt 파일만 보이게
 
 		// three button panel
 		buttonPanel = new JPanel();
