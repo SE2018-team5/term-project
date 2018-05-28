@@ -31,7 +31,7 @@ public class EditPanelController {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			int result = editPanel.getFileDlg().showOpenDialog(null);
-			if (result == JFileChooser.APPROVE_OPTION) // ÆÄÀÏÀ» ¼±ÅÃÇÏ°í ¿­¾úÀ»¶§ ÀÌº¥Æ®
+			if (result == JFileChooser.APPROVE_OPTION) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®
 			{
 				try {
 					File file = editPanel.getFileDlg().getSelectedFile();
@@ -42,7 +42,7 @@ public class EditPanelController {
 						sb.append(scan.nextLine() + "\r\n");
 					}
 					editPanel.setContent(sb.toString() + "\r\n");
-					editPanel.setEditorPaneNotEditable(); // ¼öÁ¤ ºÒ°¡
+					editPanel.setEditorPaneNotEditable(); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
 
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
