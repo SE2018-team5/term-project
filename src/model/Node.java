@@ -37,11 +37,11 @@ public class Node {
 			return "";
 		}
 		if (this.flag == Node.DELETE) {
-			temp.append(leftIndex + "," + (leftIndex + context.length()) + "d" + rightIndex + "\r\n");
-			temp.append("> \"" + context.toString() + "\""+ "\r\n");
+			temp.append(leftIndex + "," + (leftIndex + context.length()) + "d" + rightIndex + "\n");
+			temp.append("> \"" + context.toString() + "\""+ "\n");
 		} else if (this.flag == Node.ADD) {
-			temp.append(leftIndex + "a" + rightIndex + "," + (rightIndex + context.length())+ "\r\n");
-			temp.append("> \"" + context.toString() + "\"" + "\r\n");
+			temp.append(leftIndex + "a" + rightIndex + "," + (rightIndex + context.length())+ "\n");
+			temp.append("> \"" + context.toString() + "\"" + "\n");
 		}
 		
 		return temp.toString();

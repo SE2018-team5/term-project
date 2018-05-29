@@ -5,7 +5,6 @@ import java.util.Scanner;
 import controller.LCSubsequence;
 import model.Node;
 
-
 public class Main {
 
     public static void main(String[] args) {
@@ -24,11 +23,11 @@ public class Main {
         	input2 = new Scanner(file2);
         	
         	while(input1.hasNextLine()) {
-        		text1.append(input1.nextLine() + "\r\n");
+        		text1.append(input1.nextLine() + "\n");
         	}
         	
         	while(input2.hasNextLine()) {
-        		text2.append(input2.nextLine() + "\r\n"); 	
+        		text2.append(input2.nextLine() + "\n"); 	
         	}
         } catch(Exception e) {
         	e.printStackTrace(System.out);
