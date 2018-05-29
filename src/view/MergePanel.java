@@ -18,7 +18,18 @@ public class MergePanel extends JPanel{
 	private JButton btnCpy2Left;
 	private JButton btnCpy2Right;
 
+	public JButton getBtnCmp() {
+		return this.btnCmp;
+	}
 
+	public JButton getBtnCpy2Left() {
+		return this.btnCpy2Left;
+	}
+	
+	public JButton getBtnCpy2Right() {
+		return this.btnCpy2Right;
+	}
+	
 	MergePanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		// compare button
