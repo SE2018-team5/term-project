@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -13,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -23,10 +25,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.text.Highlighter;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.LCSubsequence;
+import controller.MyHighlightPainter;
 import model.Node;
 
 public class MainWindow extends JFrame {
@@ -36,6 +43,7 @@ public class MainWindow extends JFrame {
    public StringBuffer text1;
    public StringBuffer text2;
    public Boolean      isFirst;
+   private boolean	   merge_st = false;
 
    /**
     * Launch the application.
@@ -56,6 +64,9 @@ public class MainWindow extends JFrame {
    public JPanel createEditPanel() {
       JPanel pane = new JPanel();
       JFileChooser fileDlg = new JFileChooser();
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("txtÆÄÀÏ", "txt");
+      fileDlg.setFileFilter(filter);
+      
       StringBuffer sb;
       isFirst = true; /*****************************************************************************/
       pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
@@ -75,7 +86,7 @@ public class MainWindow extends JFrame {
       buttonPanel.add(btnEdit);
 
       JTextField tfFilename = new JTextField();
-
+      
       // right edit panel on bottom Panel
       JPanel editPanel = new JPanel();
       pane.add(editPanel);
@@ -184,6 +195,7 @@ public class MainWindow extends JFrame {
     */
 
    public MainWindow() {
+	 MyHighlightPainter Highlighter = new MyHighlightPainter(Color.YELLOW);
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       setBounds(10, 10, 1036, 586); // Default window size
       setTitle("Simple Merge - Team 5");
@@ -202,8 +214,8 @@ public class MainWindow extends JFrame {
       btnCmp.setAlignmentX(Component.CENTER_ALIGNMENT);
 
       // merging button
-      JButton btnCpy2Left = new JButton("ï¿½ï¿½ Copy to Left");
-      JButton btnCpy2Right = new JButton("Copy to Right ï¿½ï¿½");
+      JButton btnCpy2Left = new JButton("Copy to Left");
+      JButton btnCpy2Right = new JButton("Copy to Right");
       mergePanel.add(btnCpy2Left);
       btnCpy2Left.setAlignmentX(Component.CENTER_ALIGNMENT);
       mergePanel.add(btnCpy2Right);
@@ -227,11 +239,17 @@ public class MainWindow extends JFrame {
 		public void actionPerformed(ActionEvent e1) {
 	        LCSubsequence l = new LCSubsequence();
 	        LinkedList<Node> r = LCSubsequence.getDiff(text1.toString(), text2.toString());
-	        for(Node e : r) {
+	        for(Node e : r) { 
+	        	if(e.flag == Node.DELETE) {
+	        		System.out.println("Delete\n");
+	        		Highlighter.highlight(leftEditPanel.tfFilename, e.toString(),e.leftIndex, e.context.length());
+	        	}
+	        	if(e.flag == Node.ADD)
+	        		System.out.println("ADD\n");
 	            System.out.println(e.toString());
 	        }
 		}
+		
       });
-      
    }
 }

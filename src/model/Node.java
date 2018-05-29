@@ -35,6 +35,7 @@ public class Node {
 		if (this.flag == Node.DELETE) {
 			temp.append(leftIndex + "," + (leftIndex + context.length()) + "d" + rightIndex + "\r\n");
 			temp.append("> \"" + context.toString() + "\""+ "\r\n");
+			
 		} else if (this.flag == Node.ADD) {
 			temp.append(leftIndex + "a" + rightIndex + "," + (rightIndex + context.length())+ "\r\n");
 			temp.append("> \"" + context.toString() + "\"" + "\r\n");
