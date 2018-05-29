@@ -1,4 +1,4 @@
-import test.ArrayList;
+import java.util.ArrayList;
 import test.LongestCommonSubseq;
 
 package model;
