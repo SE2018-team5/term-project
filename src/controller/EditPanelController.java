@@ -17,6 +17,7 @@ import view.EditPanel;
 public class EditPanelController {
 
 	private EditPanel editPanel;
+	public StringBuffer text;
 	EditPanelController(EditPanel e, MainWindowModel m){
 		this.editPanel = e;
 		
@@ -39,11 +40,11 @@ public class EditPanelController {
 					Scanner scan = new Scanner(file);
 					StringBuffer sb = new StringBuffer();
 					while (scan.hasNextLine()) {
-						sb.append(scan.nextLine() + "\r\n");
+						sb.append(scan.nextLine() + "\n");
 					}
-					editPanel.setContent(sb.toString() + "\r\n");
+					editPanel.setContent(sb.toString() + "\n");
 					editPanel.setEditorPaneNotEditable(); // 수정 불가
-
+					text = sb;
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
 					
@@ -94,5 +95,9 @@ public class EditPanelController {
 				editPanel.setEditorPaneEditable();
 		}
 		
+	}
+	public EditPanel getEditPanel() {
+		// TODO Auto-generated method stub
+		return this.editPanel;
 	}
 }
