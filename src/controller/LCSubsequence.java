@@ -29,22 +29,55 @@ public class LCSubsequence {
 				// add right text character in node
 				if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) {
 					// already node exist in same right text index
-					result.peek().leftIndex = x - 1;
-					result.peek().addChar(a.charAt(x - 1));
+
+						result.peek().leftIndex = x - 1;
+						result.peek().addChar(a.charAt(x - 1));
+						x--;
+
 				} else {
-					result.push(new Node(new StringBuffer(String.valueOf(a.charAt(x - 1))), x - 1, y, Node.DELETE));
+					result.push(new Node(new StringBuffer(new String()), x - 1, y, Node.DELETE));
+					int rightidx = x;
+					while(a.charAt(x - 1) != ' ' ) {
+						if( a.charAt(x - 1) == '\n' )
+							break;
+						result.peek().leftIndex = x - 1;
+						result.peek().addChar(a.charAt(x - 1));
+						x--;
+					}
+					
+					while(a.charAt(rightidx) != ' ') {
+						if(a.charAt(rightidx) == '\n' )
+							break;
+						result.peek().context.append(a.charAt(rightidx));
+						rightidx++;
+					}
 				}
-				x--;
 			} else if (lengths[x][y] == lengths[x][y - 1]) {
 				// add left text character in node
 				if (x == result.peek().leftIndex && result.peek().flag == Node.ADD) {
 					// already node exist in same left text index
-					result.peek().rightIndex = y - 1;
-					result.peek().addChar(b.charAt(y - 1));
+
+						result.peek().rightIndex = y - 1;
+						result.peek().addChar(b.charAt(y - 1));
+						y--;
+
 				} else {
-					result.push(new Node(new StringBuffer(String.valueOf(b.charAt(y - 1))), x, y - 1, Node.ADD));
+					result.push(new Node(new StringBuffer(new String()), x, y - 1, Node.ADD));
+					int leftidx = y;
+					while(b.charAt(y - 1) != ' '){
+						if(b.charAt(y - 1) == '\n')
+							break;
+						result.peek().rightIndex = y - 1;
+						result.peek().addChar(b.charAt(y - 1));
+						y--;
+					}
+					while(b.charAt(leftidx) != ' ') {
+						if(b.charAt(leftidx) == '\n')
+							break;
+						result.peek().context.append(b.charAt(leftidx));
+						leftidx++;
+					}
 				}
-				y--;
 			} else {
 				assert a.charAt(x - 1) == b.charAt(y - 1);
 				sb.append(a.charAt(x - 1));
