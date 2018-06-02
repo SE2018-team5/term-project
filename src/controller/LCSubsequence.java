@@ -29,14 +29,13 @@ public class LCSubsequence {
 				// add right text character in node
 				if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) {
 					// already node exist in same right text index
-
 						result.peek().leftIndex = x - 1;
 						result.peek().addChar(a.charAt(x - 1));
 						x--;
-
 				} else {
 					result.push(new Node(new StringBuffer(new String()), x - 1, y, Node.DELETE));
 					int rightidx = x;
+					
 					while(a.charAt(x - 1) != ' ' ) {
 						if( a.charAt(x - 1) == '\n' )
 							break;
@@ -44,8 +43,9 @@ public class LCSubsequence {
 						result.peek().addChar(a.charAt(x - 1));
 						x--;
 					}
-					
 					while(a.charAt(rightidx) != ' ') {
+						if(a.charAt(rightidx - 1) == ' ' || a.charAt(rightidx - 1) == '\n')
+							break;
 						if(a.charAt(rightidx) == '\n' )
 							break;
 						result.peek().context.append(a.charAt(rightidx));
@@ -56,11 +56,9 @@ public class LCSubsequence {
 				// add left text character in node
 				if (x == result.peek().leftIndex && result.peek().flag == Node.ADD) {
 					// already node exist in same left text index
-
 						result.peek().rightIndex = y - 1;
 						result.peek().addChar(b.charAt(y - 1));
 						y--;
-
 				} else {
 					result.push(new Node(new StringBuffer(new String()), x, y - 1, Node.ADD));
 					int leftidx = y;
@@ -72,6 +70,8 @@ public class LCSubsequence {
 						y--;
 					}
 					while(b.charAt(leftidx) != ' ') {
+						if(b.charAt(leftidx - 1) == ' ' || b.charAt(leftidx - 1) == '\n')
+							break;
 						if(b.charAt(leftidx) == '\n')
 							break;
 						result.peek().context.append(b.charAt(leftidx));
