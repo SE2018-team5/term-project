@@ -7,7 +7,7 @@ public class EditPanelModel {
 	private StringBuffer text;
 	
 	public void loaded() {
-		isLoaded = true;
+		this.isLoaded = true;
 	}
 	
 	public Boolean getIsLoaded() {
@@ -21,6 +21,11 @@ public class EditPanelModel {
 		return this.isModified;
 	}
 	
-	
+	public void setSB(String s) {
+		this.text = new StringBuffer(s);
+	}
+	public String getSB() {
+		return this.text.toString();
+	}
 	
 }
