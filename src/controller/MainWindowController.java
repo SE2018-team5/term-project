@@ -85,6 +85,7 @@ public class MainWindowController {
 				System.out.println(e1.toString());
 			}
 			MainWindowModel.compared();
+			MainWindowModel.highlighted(); 
 		}
 	}
 
@@ -93,11 +94,24 @@ public class MainWindowController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			MainWindowModel.setIsHighlighted(false);
+			
 			if (!MainWindowModel.getIsCompared()) {
 				int answer = JOptionPane.showConfirmDialog(null, "Files are not compared yet. Still want to merge?",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				if (answer == JOptionPane.OK_OPTION) {
-
+					String str = rightController.getEditPanel().getContent();
+		            leftController.getEditPanel().setContent(str);
+		            MainWindowModel.setIsCompared(false);
+				}
+			}else if (MainWindowModel.getIsCompared()) {
+				MainWindowModel.setIsCompared(false);
+				int answer = JOptionPane.showConfirmDialog(null, "Hightlighted words will be initialized, Still want to merge?",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+				if (answer == JOptionPane.OK_OPTION) {
+					String str = rightController.getEditPanel().getContent();
+		            leftController.getEditPanel().setContent(str);
+		            MainWindowModel.setIsCompared(false);
 				}
 			}
 		}
@@ -109,10 +123,25 @@ public class MainWindowController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			MainWindowModel.setIsHighlighted(false);
+
 			if (!MainWindowModel.getIsCompared()) {
 				int answer = JOptionPane.showConfirmDialog(null, "Files are not compared yet. Still want to merge?",
 						"Warning", JOptionPane.WARNING_MESSAGE);
-
+				if (answer == JOptionPane.OK_OPTION) {
+					String str = leftController.getEditPanel().getContent();
+		            rightController.getEditPanel().setContent(str);
+		            MainWindowModel.setIsCompared(false);
+				}
+			}else if (MainWindowModel.getIsCompared()) {
+				MainWindowModel.setIsCompared(false);
+				int answer = JOptionPane.showConfirmDialog(null, "Hightlighted words will be initialized, Still want to merge?",
+						"Warning", JOptionPane.WARNING_MESSAGE);
+				if (answer == JOptionPane.OK_OPTION) {
+					String str = leftController.getEditPanel().getContent();
+		            rightController.getEditPanel().setContent(str);
+		            MainWindowModel.setIsCompared(false);
+				}
 			}
 		}
 
