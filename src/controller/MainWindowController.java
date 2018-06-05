@@ -68,7 +68,7 @@ public class MainWindowController {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			LCSubsequence l = new LCSubsequence();
-			LinkedList<Node> r = LCSubsequence.getDiff(leftController.text.toString(), rightController.text.toString());
+			LinkedList<Node> r = LCSubsequence.getDiff(leftController.model.getSB().toString(), rightController.model.getSB().toString());
 
 			for (Node e1 : r) {
 				if (e1.flag == Node.DELETE) {
