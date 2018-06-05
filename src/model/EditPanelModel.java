@@ -7,7 +7,7 @@ public class EditPanelModel {
 	private StringBuffer text;
 	
 	public void loaded() {
-		isLoaded = true;
+		this.isLoaded = true;
 	}
 	
 	public Boolean getIsLoaded() {

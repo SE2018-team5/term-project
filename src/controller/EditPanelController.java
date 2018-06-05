@@ -11,15 +11,20 @@ import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 
+import model.EditPanelModel;
 import model.MainWindowModel;
 import view.EditPanel;
 
 public class EditPanelController {
-
+	
+	EditPanelModel model;
+	MainWindowController mainController;
 	private EditPanel editPanel;
 	public StringBuffer text;
-	EditPanelController(EditPanel e, MainWindowModel m){
+	EditPanelController(EditPanel e, MainWindowController m, EditPanelModel em){
 		this.editPanel = e;
+		this.mainController = m;
+		this.model = em;
 		
 		this.editPanel.addLoadActionListener(new LoadActionListener());
 		this.editPanel.addSaveActionListener(new SaveActionListener());
@@ -48,7 +53,8 @@ public class EditPanelController {
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
 					
-					MainWindowModel.loaded();
+					model.loaded();
+					mainController.isBothLoaded();
 					scan.close();
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -99,5 +105,9 @@ public class EditPanelController {
 	public EditPanel getEditPanel() {
 		// TODO Auto-generated method stub
 		return this.editPanel;
+	}
+	
+	public EditPanelModel getEditPanelModel() {
+		return this.model;
 	}
 }
