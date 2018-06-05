@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 
+import model.EditPanelModel;
 import model.MainWindowModel;
 import model.Node;
 import view.MainWindowView;
@@ -30,7 +31,9 @@ public class MainWindowController {
 				try {
 					MainWindowView v = new MainWindowView();
 					MainWindowModel m = new MainWindowModel();
-					MainWindowController controller = new MainWindowController(v, m);
+					EditPanelModel left = new EditPanelModel();
+					EditPanelModel right = new EditPanelModel();
+					MainWindowController controller = new MainWindowController(v, m, left, right);
 					v.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,13 +41,19 @@ public class MainWindowController {
 			}
 		});
 	}
+	
+	public void isBothLoaded() {
+		if(leftController.getEditPanelModel().getIsLoaded() && rightController.getEditPanelModel().getIsLoaded()) {
+			this.view.getMergePanel().setBtnsEnable();
+		}
+	}
 
-	MainWindowController(MainWindowView v, MainWindowModel m) {
+	MainWindowController(MainWindowView v, MainWindowModel m, EditPanelModel left, EditPanelModel right) {
 		this.view = v;
 		this.model = m;
 
-		leftController = new EditPanelController(view.getLeftPanel(), m);
-		rightController = new EditPanelController(view.getRightPanel(), m);
+		leftController = new EditPanelController(view.getLeftPanel(),this, left);
+		rightController = new EditPanelController(view.getRightPanel(), this, right);
 		this.view.getMergePanel().addCmpActionListener(new CmpActionListener());
 		this.view.getMergePanel().addCopyToLeftActionListener(new CopyToLeftActionListener());
 		this.view.getMergePanel().addCopyToRightActionListener(new CopyToRightActionListener());

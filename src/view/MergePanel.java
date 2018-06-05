@@ -32,7 +32,16 @@ public class MergePanel extends JPanel{
 		btnCpy2Left.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.add(btnCpy2Right);
 		btnCpy2Right.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+		
+		btnCmp.setEnabled(false);
+		btnCpy2Left.setEnabled(false);
+		btnCpy2Right.setEnabled(false);
+	}
+	
+	public void setBtnsEnable() {
+		this.btnCmp.setEnabled(true);
+		this.btnCpy2Left.setEnabled(true);
+		this.btnCpy2Right.setEnabled(true);
 	}
 
 	public void addCmpActionListener(ActionListener CmpActionListener) {
