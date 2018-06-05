@@ -23,8 +23,8 @@ public class LCSubsequence {
 		// read the substring out from the matrix
 		StringBuffer sb = new StringBuffer();
 		
-		for (int x = a.length(), y = b.length(); x != 0 && y != 0;) {
-			if (lengths[x][y] == lengths[x - 1][y]) {
+		for (int x = a.length(), y = b.length(); x != 0 || y != 0;) {
+			if (lengths[x][y] == lengths[x - 1][y] && x != 0) {
 				// add right text character in node
 				if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) {
 					// already node exist in same right text index
@@ -44,7 +44,7 @@ public class LCSubsequence {
 //						rightidx++;
 //					}
 				}
-			} else if (lengths[x][y] == lengths[x][y - 1]) {
+			} else if (lengths[x][y] == lengths[x][y - 1] && y != 0) {
 				
 				// add left text character in node
 				if (x == result.peek().leftIndex && result.peek().flag == Node.ADD) {
