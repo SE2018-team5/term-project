@@ -61,6 +61,11 @@ public class EditPanel extends JPanel{
 	}
 	public JButton getBtnEdit() {
 		return this.btnEdit;
+		
+	}
+	public JEditorPane getEditorPane() {
+		
+		return this.editorPane;
 	}
 	public void setEditorPaneEditable() {
 		this.editorPane.setEditable(true);
@@ -138,4 +143,6 @@ public class EditPanel extends JPanel{
 	public void addEditActionListener(ActionListener listenerForEditAction) {
 		btnEdit.addActionListener(listenerForEditAction);
 	}
+
+
 }
