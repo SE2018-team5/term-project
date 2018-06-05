@@ -59,7 +59,7 @@ public class MainWindowController {
 	class CmpActionListener implements ActionListener {
 
 		javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(
-				Color.YELLOW);
+				Color.RED);
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -73,6 +73,8 @@ public class MainWindowController {
 			rightBuffer.setStringBuffer(rightController.getEditPanel().getContent());
 			
 			LinkedList<Node> r = LCSubsequence.getDiff(leftBuffer.getStringBuffer().toString(),rightBuffer.getStringBuffer().toString());
+			System.out.println(leftBuffer.getStringBuffer().toString());
+			System.out.println(rightBuffer.getStringBuffer().toString());
 			
 			for (Node e1 : r) {
 				if (e1.flag == Node.DELETE) {
