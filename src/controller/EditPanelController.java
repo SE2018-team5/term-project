@@ -50,6 +50,7 @@ public class EditPanelController {
 					editPanel.setContent(sb.toString() + "\n");
 					editPanel.setEditorPaneNotEditable(); // 수정 불가
 					model.setSB(sb);
+					editPanel.setContent(model.getSB().toString());
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
 					
