@@ -24,6 +24,9 @@ public class EditPanelModel {
 	public void setSB(String s) {
 		this.text = new StringBuffer(s);
 	}
+	public void setSB(StringBuffer sb) {
+		this.text = sb;
+	}
 	public String getSB() {
 		return this.text.toString();
 	}
