@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
@@ -17,6 +18,8 @@ public class MergePanel extends JPanel{
 	private JButton btnCmp;
 	private JButton btnCpy2Left;
 	private JButton btnCpy2Right;
+	private JButton btnUp;
+	private JButton btnDown;
 	
 	MergePanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -33,15 +36,31 @@ public class MergePanel extends JPanel{
 		this.add(btnCpy2Right);
 		btnCpy2Right.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
+		JPanel updownPan = new JPanel();
+		updownPan.setLayout(new GridLayout(1,2));
+		
+		btnUp = new JButton("UP");
+		updownPan.add(btnUp);
+		btnUp.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnDown = new JButton("DOWN");
+		updownPan.add(btnDown);
+		btnDown.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		this.add(updownPan);
+		
 		btnCmp.setEnabled(false);
 		btnCpy2Left.setEnabled(false);
 		btnCpy2Right.setEnabled(false);
+		btnUp.setEnabled(false);
+		btnDown.setEnabled(false);
 	}
 	
 	public void setBtnsEnable() {
 		this.btnCmp.setEnabled(true);
 		this.btnCpy2Left.setEnabled(true);
 		this.btnCpy2Right.setEnabled(true);
+		btnUp.setEnabled(true);
+		btnDown.setEnabled(true);
 	}
 
 	public void addCmpActionListener(ActionListener CmpActionListener) {
@@ -53,6 +72,11 @@ public class MergePanel extends JPanel{
 	public void addCopyToRightActionListener(ActionListener copyToRightActionListener) {
 		this.btnCpy2Right.addActionListener(copyToRightActionListener);
 	}
-	
+	public void addUpActionListener(ActionListener upActionListener) {
+		this.btnUp.addActionListener(upActionListener);
+	}
+	public void addDownActionListener(ActionListener downActionListener) {
+		this.btnDown.addActionListener(downActionListener);
+	}
 
 }
