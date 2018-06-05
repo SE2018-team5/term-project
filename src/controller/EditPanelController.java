@@ -20,7 +20,7 @@ public class EditPanelController {
 	EditPanelModel model;
 	MainWindowController mainController;
 	private EditPanel editPanel;
-	public StringBuffer text;
+	
 	EditPanelController(EditPanel e, MainWindowController m, EditPanelModel em){
 		this.editPanel = e;
 		this.mainController = m;
