@@ -53,6 +53,10 @@ public class EditPanel extends JPanel{
 	public void setContent(String s) {
 		this.editorPane.setText(s);
 	}
+	public void getContent(String s) {
+		this.editorPane.getText();
+	}
+	
 	public JButton getBtnLoad() {
 		return this.btnLoad;
 	}

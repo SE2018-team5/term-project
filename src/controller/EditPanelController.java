@@ -100,4 +100,8 @@ public class EditPanelController {
 		// TODO Auto-generated method stub
 		return this.editPanel;
 	}
+	public void setStringBuffer(String s) {
+		text.delete(0, text.length());
+		text.append(s);
+	}
 }
