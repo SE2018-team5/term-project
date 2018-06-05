@@ -57,6 +57,8 @@ public class MainWindowController {
 		this.view.getMergePanel().addCmpActionListener(new CmpActionListener());
 		this.view.getMergePanel().addCopyToLeftActionListener(new CopyToLeftActionListener());
 		this.view.getMergePanel().addCopyToRightActionListener(new CopyToRightActionListener());
+		this.view.getMergePanel().addUpActionListener(new UpActionListener());
+		this.view.getMergePanel().addDownActionListener(new DownActionListener());
 	}
 
 	class CmpActionListener implements ActionListener {
@@ -154,5 +156,23 @@ public class MainWindowController {
 			}
 		}
 
+	}
+	class UpActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	class DownActionListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }
