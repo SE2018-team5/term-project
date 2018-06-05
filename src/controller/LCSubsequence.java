@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.LinkedList;
-
 import model.Node;
 
 public class LCSubsequence {
