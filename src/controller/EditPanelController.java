@@ -32,7 +32,7 @@ public class EditPanelController {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			int result = editPanel.getFileDlg().showOpenDialog(null);
-			if (result == JFileChooser.APPROVE_OPTION) // ÆÄÀÏÀ» ¼±ÅÃÇÏ°í ¿­¾úÀ»¶§ ÀÌº¥Æ®
+			if (result == JFileChooser.APPROVE_OPTION) // íŒŒì¼ì„ ì„ íƒí•˜ê³  ì—´ì—ˆì„ë•Œ ì´ë²¤íŠ¸
 			{
 				try {
 					File file = editPanel.getFileDlg().getSelectedFile();
@@ -43,7 +43,7 @@ public class EditPanelController {
 						sb.append(scan.nextLine() + "\n");
 					}
 					editPanel.setContent(sb.toString() + "\n");
-					editPanel.setEditorPaneNotEditable(); // ¼öÁ¤ ºÒ°¡
+					editPanel.setEditorPaneNotEditable(); // ìˆ˜ì • ë¶ˆê°€
 					text = sb;
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
@@ -89,10 +89,17 @@ public class EditPanelController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if (editPanel.isEditable())
+			if (editPanel.isEditable()) {
 				editPanel.setEditorPaneNotEditable();
-			else
+				editPanel.getBtnEdit().setText("Edit");
+				model.setIsModified(false);
+				model.setSB(editPanel.getContent());
+			}
+			else {
 				editPanel.setEditorPaneEditable();
+				editPanel.getBtnEdit().setText("Editing...");
+				model.setIsModified(true);
+			}
 		}
 		
 	}
