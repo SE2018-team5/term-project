@@ -23,8 +23,9 @@ public class LCSubsequence {
 		// read the substring out from the matrix
 		StringBuffer sb = new StringBuffer();
 		
-		for (int x = a.length(), y = b.length(); x != 0 || y != 0;) {
-			if (lengths[x][y] == lengths[x - 1][y] && x != 0) {
+		int x = 0, y = 0;
+ 		for (x = a.length(), y = b.length(); x > 0 && y > 0;) {
+			if (lengths[x][y] == lengths[x - 1][y]) {
 				// add right text character in node
 				if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) {
 					// already node exist in same right text index
@@ -32,7 +33,7 @@ public class LCSubsequence {
 						result.peek().addChar(a.charAt(x - 1));
 						x--;
 				} else {
-					result.push(new Node(new StringBuffer(new String()), x - 1, y, Node.DELETE));
+					result.push(new Node(new StringBuffer(a.substring(x-1, x)), x - 1, y, Node.DELETE));
 //					int rightidx = x - 1;
 //					while(a.charAt(x - 1) != '\n') {
 //						result.peek().leftIndex = x - 1;
@@ -43,8 +44,9 @@ public class LCSubsequence {
 //						result.peek().context.append(a.charAt(rightidx));
 //						rightidx++;
 //					}
+					x--;
 				}
-			} else if (lengths[x][y] == lengths[x][y - 1] && y != 0) {
+			} else if (lengths[x][y] == lengths[x][y - 1]) {
 				
 				// add left text character in node
 				if (x == result.peek().leftIndex && result.peek().flag == Node.ADD) {
@@ -53,7 +55,7 @@ public class LCSubsequence {
 						result.peek().addChar(b.charAt(y - 1));
 						y--;
 				} else {
-					result.push(new Node(new StringBuffer(new String()), x, y - 1, Node.ADD));
+					result.push(new Node(new StringBuffer(b.substring(y-1, y)), x, y - 1, Node.ADD));
 //					int leftidx = y - 1;
 //					while(b.charAt(y - 1) != '\n'){
 //						result.peek().rightIndex = y - 1;
@@ -64,6 +66,7 @@ public class LCSubsequence {
 //						result.peek().context.append(b.charAt(leftidx + 1));
 //						leftidx++;
 //					}
+					y--;
 				}
 			} else {
 				assert a.charAt(x - 1) == b.charAt(y - 1);
@@ -72,29 +75,34 @@ public class LCSubsequence {
 				y--;
 			}
 		}
-
-//		while (!result.isEmpty()) {
-//			if (result.peek().flag == Node.DUMMY) {
-//				result.pop();
-//				break;
-//			}
-//			if (result.peek().flag == Node.DELETE) {
-//
-//				Node e = result.pop();
-//
-//				System.out.println(e.leftIndex + "," + (e.leftIndex + e.context.length()) + "d" + e.rightIndex);
-//				System.out.println("> \"" + a.substring(e.leftIndex, (e.leftIndex + e.context.length())) + "\"");
-//
-//			} else if (result.peek().flag == Node.ADD) {
-//
-//				Node e = result.pop();
-//
-//				System.out.println(e.leftIndex + "a" + e.rightIndex + "," + (e.rightIndex + e.context.length()));
-//				System.out.println("< \"" + b.substring(e.rightIndex, (e.rightIndex + e.context.length())) + "\"");
-//
-//			}
-//		}
-
+ 		
+ 		// make the node for rest of *left string*
+		while(x > 0) {
+			// add left text character in node
+			if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) {
+				// already node exist in same right text index
+					result.peek().leftIndex = x - 1;
+					result.peek().addChar(a.charAt(x - 1));
+					x--;
+			} else {
+				result.push(new Node(new StringBuffer(a.substring(x-1, x)), x-1, y, Node.DELETE));
+				x--;
+			}
+		}
+		
+		// make the node for rest of *right string*
+		while(y > 0) {
+			// add left text character in node
+			if (x == result.peek().leftIndex && result.peek().flag == Node.ADD) {
+				// already node exist in same left text index
+					result.peek().rightIndex = y - 1;
+					result.peek().addChar(b.charAt(y - 1));
+					y--;
+			} else {
+				result.push(new Node(new StringBuffer(b.substring(y-1, y)), x, y - 1, Node.ADD));
+				y--;
+			}
+		}
 		return result;
 //		return sb.reverse().toString();
 		
