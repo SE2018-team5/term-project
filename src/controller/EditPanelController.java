@@ -49,7 +49,7 @@ public class EditPanelController {
 					}
 					editPanel.setContent(sb.toString() + "\n");
 					editPanel.setEditorPaneNotEditable(); // 수정 불가
-					text = sb;
+					model.setSB(sb);
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
 					
@@ -80,7 +80,7 @@ public class EditPanelController {
 				FileWriter fw = new FileWriter(file, false);
 				BufferedWriter bw = new BufferedWriter(fw);
 
-				bw.write(editPanel.getContent());
+				bw.write(model.getSB().toString());
 				bw.close();
 
 			} catch (IOException e1) {
