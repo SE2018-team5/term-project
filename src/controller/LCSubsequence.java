@@ -120,8 +120,11 @@ public class LCSubsequence {
 		// find changed words
 		for(Node n1 : result) {
 			if (n1.flag == Node.ADD) {
-				ret.add(n1);
 				Node left = null;
+				if(ret.contains(n1))
+					continue;
+				else 
+					ret.add(n1);
 				
 				for(Node n2 : result) {
 					if(n2.flag == Node.DELETE && n2.leftIndex == n1.leftIndex) {
@@ -129,6 +132,7 @@ public class LCSubsequence {
 						continue;
 					}
 				}
+				
 				if(ret.contains(left)) 
 					continue;
 				
@@ -143,11 +147,15 @@ public class LCSubsequence {
 			
 			if(n1.flag == Node.DELETE) {
 				Node right = null;
-				ret.add(n1);
+				if(ret.contains(n1))
+					continue;
+				else 
+					ret.add(n1);
+				
 				for(Node n2 : result) {
 					if(n2.flag == Node.ADD && n2.rightIndex == n1.rightIndex) {
 						right = n2;
-						continue;
+						break;
 					}
 				}
 				
