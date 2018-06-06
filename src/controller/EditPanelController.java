@@ -49,7 +49,7 @@ public class EditPanelController {
 			String line;
 			
 
-			if (result == JFileChooser.APPROVE_OPTION) // 파일을 선택하고 열었을때 이벤트
+			if (result == JFileChooser.APPROVE_OPTION) // �뙆�씪�쓣 �꽑�깮�븯怨� �뿴�뿀�쓣�븣 �씠踰ㅽ듃
 			{
 				try {
 					File file = editPanel.getFileDlg().getSelectedFile();
@@ -63,7 +63,7 @@ public class EditPanelController {
 					
 					editPanel.getFilePathTextField().setText(file.getPath());
 					editPanel.setContent(str);
-					editPanel.setEditorPaneNotEditable(); // 수정 불가
+					editPanel.setEditorPaneNotEditable(); // �닔�젙 遺덇�
 					text = new StringBuffer(str);
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
@@ -84,10 +84,11 @@ public class EditPanelController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			File file = editPanel.getFileDlg().getSelectedFile();
-
+			int result = editPanel.getFileDlg().showSaveDialog(null);
+			
+			if (result == JFileChooser.APPROVE_OPTION) {
 			try {
+				File file = editPanel.getFileDlg().getSelectedFile();
 				if (!file.exists()) {
 					file.createNewFile();
 				}
@@ -102,6 +103,7 @@ public class EditPanelController {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}
 		}
 		
 	}
