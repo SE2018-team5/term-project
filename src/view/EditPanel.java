@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -85,6 +87,8 @@ public class EditPanel extends JPanel{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fileDlg = new JFileChooser();
 		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt 파일만 보이게
+		fileDlg.setMultiSelectionEnabled(false);//다중 선택 불가
+		fileDlg.setCurrentDirectory(new File(System.getProperty("user.dir") + "//" + "data"));
 
 		// three button panel
 		buttonPanel = new JPanel();

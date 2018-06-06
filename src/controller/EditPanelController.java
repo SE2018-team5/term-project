@@ -27,8 +27,6 @@ public class EditPanelController {
 	FileReader fr;
 	BufferedReader br = null;
 	
-	EditPanelController(EditPanel e, MainWindowModel m){
-	
 	EditPanelController(EditPanel e, MainWindowController m, EditPanelModel em){
 		this.editPanel = e;
 		this.mainController = m;
@@ -46,7 +44,9 @@ public class EditPanelController {
 			// TODO Auto-generated method stub
 			int result = editPanel.getFileDlg().showOpenDialog(null);
 			String line;
-			if (result == JFileChooser.APPROVE_OPTION) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®
+			
+
+			if (result == JFileChooser.APPROVE_OPTION) // ÆÄÀÏÀ» ¼±ÅÃÇÏ°í ¿­¾úÀ»¶§ ÀÌº¥Æ®
 			{
 				try {
 					File file = editPanel.getFileDlg().getSelectedFile();
@@ -60,15 +60,15 @@ public class EditPanelController {
 					
 					editPanel.getFilePathTextField().setText(file.getPath());
 					editPanel.setContent(str);
-					editPanel.setEditorPaneNotEditable(); // ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
+					editPanel.setEditorPaneNotEditable(); // ¼öÁ¤ ºÒ°¡
 					text = new StringBuffer(str);
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
 					
 					model.loaded();
 					mainController.isBothLoaded();
-					scan.close();
-				} catch (FileNotFoundException e1) {
+					br.close();
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -132,5 +132,11 @@ public class EditPanelController {
 	
 	public EditPanelModel getEditPanelModel() {
 		return this.model;
+	}
+	public void updateEditPanel() {
+		if(this.model.getIsModified()) {
+			this.getEditPanel().setContent(this.model.getSB());
+		}
+		
 	}
 }
