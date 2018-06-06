@@ -203,8 +203,12 @@ public class LCSubsequence {
 					while (c != ' ' && c != '\n' && wordStart != 0) {
 						n.addChar(c);
 						wordStart--;
-						
-						c = b.charAt(wordStart - 1);
+
+						if(wordStart == 0) {
+							break;
+						} else {
+							c = b.charAt(wordStart - 1);
+						}
 					}	
 				}
 				
@@ -223,7 +227,11 @@ public class LCSubsequence {
 						n.context.append(c);
 						wordEnd++;
 						
-						c = b.charAt(wordEnd + 1);
+						if(wordEnd + 1 == b.length()) {
+							break;
+						} else {
+							c = b.charAt(wordEnd + 1);
+						}
 					}
 				}
 				n.rightIndex = wordStart;
@@ -246,11 +254,16 @@ public class LCSubsequence {
 				c = a.charAt(wordStart);
 				if(c != ' ' && c != '\n') {
 					c = a.charAt(wordStart - 1);
-					while (c != ' ' && c != '\n' && wordStart != 0) {
+					while (c != ' ' && c != '\n') {
 						n.addChar(c);
 						wordStart--;
 						
-						c = a.charAt(wordStart - 1);
+						if(wordStart == 0) {
+							break;
+						} else {
+							c = a.charAt(wordStart - 1);
+						}
+							
 					}	
 				}
 				
@@ -269,7 +282,11 @@ public class LCSubsequence {
 						n.context.append(c);
 						wordEnd++;
 						
-						c = a.charAt(wordEnd + 1);
+						if(wordEnd + 1 == a.length()) {
+							break;
+						} else {
+							c = a.charAt(wordEnd + 1);
+						}
 					}
 				}
 				
