@@ -4,7 +4,6 @@ public class Node {
     public static final int DUMMY = 0;
     public static final int ADD = 1;
     public static final int DELETE = 2;
-    public static final int CHANGED = 3;
     
     public int leftIndex;
     public int rightIndex;
@@ -33,16 +32,24 @@ public class Node {
     @Override
     public String toString() {
     	StringBuffer temp = new StringBuffer();
+    	
+    	assert this.context != null;
+    	
     	if (this.flag == Node.DUMMY) {
-    		temp.append(leftIndex + "," + "DUMMY" + rightIndex + "\n");
+    		if(leftIndex == -1) {
+    			temp.append(leftIndex + "DUM" + rightIndex + ", " + (rightIndex + context.length()) + "\n");
+    		} else {
+    			temp.append(leftIndex + "," + (leftIndex + context.length()) + "DUM" + rightIndex + "\n");
+    		}
+    		
 		}
 		if (this.flag == Node.DELETE) {
 			temp.append(leftIndex + "," + (leftIndex + context.length()) + "d" + rightIndex + "\n");
-			temp.append("> \"" + context.toString() + "\""+ "\n");
 		} else if (this.flag == Node.ADD) {
 			temp.append(leftIndex + "a" + rightIndex + "," + (rightIndex + context.length())+ "\n");
-			temp.append("> \"" + context.toString() + "\"" + "\n");
 		}
+		
+		temp.append("> \"" + context.toString() + "\""+ "\n");
 		
 		return temp.toString();
     }
