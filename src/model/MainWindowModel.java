@@ -8,19 +8,16 @@ public class MainWindowModel {
 	private Boolean isCompared = false;
 	private Boolean isHighlighted = false;
 	private LinkedList<Node> resultList=null;
-	public LinkedList<Node> leftList = null;
-	public LinkedList<Node> rightList = null;
 	private int nodeNum = 0;
 	
-	
-	public void add(String s,Node n) {
-		if(s.compareTo("left")==0) {
-			leftList.add(n);
-		}else if (s.compareTo("right")==0){
-			rightList.add(n);
-		}else {
-			System.out.println("no list");
-		}
+	public void initResultNode() {
+		resultList = new LinkedList<Node>();
+	}
+	public Node getPresentNode() {
+		return this.resultList.get(nodeNum);
+	}
+	public void add(Node e1) {
+		this.resultList.add(e1);
 	}
 	public void setNodeNumZero() {
 		this.nodeNum=0;
@@ -34,12 +31,7 @@ public class MainWindowModel {
 	public int getNodeNum() {
 		return this.nodeNum;
 	}
-	public LinkedList<Node> getLeftList(){
-		return this.leftList;
-	}
-	public LinkedList<Node> getRightList(){
-		return this.rightList;
-	}
+
 	public LinkedList<Node> getResultList(){
 		return this.resultList;
 	}
