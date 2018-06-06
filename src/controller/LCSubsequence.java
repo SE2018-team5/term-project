@@ -1,11 +1,12 @@
 package controller;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import model.Node;
 
 public class LCSubsequence {
 	public static LinkedList<Node> result;
-	
+
 	public static LinkedList<Node> getDiff(String a, String b) {
 		result = new LinkedList<Node>();
 		result.push(new Node(null, 0, 0, Node.DUMMY));
@@ -103,6 +104,102 @@ public class LCSubsequence {
 				y--;
 			}
 		}
+		
+		
+		// make node word by word
+		for(Node n : result) {
+			int wordStart, wordEnd; // [wordStart, wordEnd)
+			char c;
+			
+			// if node is added
+			if(n.flag == Node.ADD) {
+				
+				// separate by words
+				// scan front-side
+				wordStart = n.rightIndex;
+				// check if rightIndex is zero
+				if (wordStart == 0) {
+					continue;
+				}
+				c = a.charAt(wordStart);
+				if(c != ' ' && c != '\n') {
+					c = b.charAt(wordStart - 1);
+					while (c != ' ' && c != '\n') {
+						n.addChar(c);
+						wordStart--;
+						
+						c = b.charAt(wordStart - 1);
+					}	
+				}
+				
+				// scan back-side
+				wordEnd = wordStart + n.context.length() - 1;
+				
+				// check if wordEnd is out of index
+				if (wordEnd == b.length() - 1) {
+					continue;
+				}
+				
+				c = b.charAt(wordEnd);
+				if(c != ' ' && c != '\n') {
+					c = b.charAt(wordEnd + 1);
+					while (c != ' ' && c != '\n') {
+						n.context.append(c);
+						wordEnd++;
+						
+						c = b.charAt(wordEnd + 1);
+					}
+				}
+				n.rightIndex = wordStart;
+			}
+			
+			// if node is deleted 
+			if(n.flag == Node.DELETE) {
+				
+				// separate by words
+				
+				// scan front-side
+				wordStart = n.leftIndex;
+				
+				// check if leftIndex is zero
+				if (wordStart == 0) {
+					continue;
+				}
+				
+				c = a.charAt(wordStart);
+				if(c != ' ' && c != '\n') {
+					c = a.charAt(wordStart - 1);
+					while (c != ' ' && c != '\n') {
+						n.addChar(c);
+						wordStart--;
+						
+						c = a.charAt(wordStart - 1);
+					}	
+				}
+				
+				
+				// scan back-side
+				wordEnd = wordStart + n.context.length() - 1;
+				// check if wordEnd is out of index
+				if (wordEnd == a.length() - 1) {
+					continue;
+				}
+				
+				c = a.charAt(wordEnd);
+				if(c != ' ' && c != '\n') {
+					c = a.charAt(wordEnd + 1);
+					while (c != ' ' && c != '\n') {
+						n.context.append(c);
+						wordEnd++;
+						
+						c = a.charAt(wordEnd + 1);
+					}
+				}
+				
+				n.leftIndex = wordStart;
+			}
+		}
+		
 		return result;
 //		return sb.reverse().toString();
 		
