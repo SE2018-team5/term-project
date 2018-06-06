@@ -222,6 +222,10 @@ public class MainWindowController {
 				int idx = model.getNodeNum();//몇 번째 노드인지 UP/DOWN이 가리키는 nodeNum 대입
 				int leftidx = model.getLeftList().get(idx).leftIndex;
 				int rightidx = model.getRightList().get(idx).rightIndex;
+				
+				Node leftNode = model.getLeftList().get(idx);
+				Node rightNode = model.getRightList().get(idx);
+				
 				String head = null, mid = null, tail = null;
 
 				//2. 0부터 leftinx 까지 string 
@@ -231,7 +235,7 @@ public class MainWindowController {
 				mid = model.getRightList().get(idx).context.toString();  
 
 				// 왼쪽 패널 (flag가 DELETE인 노드들)에서 해당 idx의 rightindex부터 file의 끝까지.
-				tail = leftModel.getSB().toString().substring(leftidx);
+				tail = leftModel.getSB().toString().substring(leftidx + leftNode.context.length());
 
 				// leftpanel의 전체 string update.
 				head=head.concat(mid);
@@ -306,7 +310,8 @@ public class MainWindowController {
 				}
 				System.out.println(e1.toString());
 			}*/
-			
+
+			model.setNodeNumZero();
 			if(!model.getLeftList().isEmpty() && !model.getRightList().isEmpty()) {
 				Node nodeLeft = model.getLeftList().get(model.getNodeNum());
 				Node nodeRight = model.getRightList().get(model.getNodeNum());
