@@ -2,11 +2,33 @@ package controller;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+
 import model.Node;
 
 public class LCSubsequence {
 	public static LinkedList<Node> result;
+	public static HashMap<Node,Node> changedResult;
 
+	// mapping node and dummy node
+	public static HashMap<Node, Integer> getMergeMap(LinkedList<Node> diff){
+		HashMap<Node, Node> diffMap = new HashMap<Node, Node>();
+		
+		for(Node n : diff) {
+			// make dummy on left
+			if(n.flag == Node.ADD) {
+				diffMap.put(n, new Node(null, n.leftIndex, -1, Node.DUMMY));
+			}
+			
+			// make dummy on right
+			if(n.flag == Node.DELETE) {
+				
+			}
+		}
+		
+		
+		return null;
+	}
 	public static LinkedList<Node> getDiff(String a, String b) {
 		result = new LinkedList<Node>();
 		result.push(new Node(null, 0, 0, Node.DUMMY));
@@ -105,6 +127,60 @@ public class LCSubsequence {
 			}
 		}
 		
+		// print out node char by char 
+		for(Node n : result) {
+			System.out.println(n.toString());
+		}
+		
+		changedResult = new HashMap<>();
+		
+		// find changed words
+		for(Node n1 : result) {
+			if(changedResult.containsKey(n1) || changedResult.containsValue(n1))
+				continue;
+			
+			if (n1.flag == Node.ADD) {
+				for(Node n2 : result) {
+					if(n2.flag == Node.DELETE && n2.leftIndex == n1.leftIndex) {
+						changedResult.put(n1, n2);
+						continue;
+					}
+				}
+				
+				// if n1 is not changed node
+				if(!changedResult.containsKey(n1)) {
+					changedResult.put(n1, new Node(null, n1.leftIndex, -1, Node.DUMMY));
+					continue;
+				}
+			}
+			
+			if(n1.flag == Node.DELETE) {
+				for(Node n2 : result) {
+					if(n2.flag == Node.ADD && n2.rightIndex == n1.rightIndex) {
+						changedResult.put(n2, n1);
+						continue;
+					}
+				}
+				
+				// if n1 is not changed node
+				if(changedResult.containsValue(n1)) {
+					changedResult.put(new Node(null, -1, n1.rightIndex, Node.DUMMY), n1);
+					continue;
+				}
+			}
+		}
+		
+//		// print out nodes that CHANGED
+//		for(Map.Entry<Node, Node> entry: changedResult.entrySet()) {
+//			Node key = entry.getKey();
+//			Node value = entry.getValue();
+//			
+//			System.out.println(key.toString());
+//			System.out.println(value.toString());
+//			System.out.println("============================================== before word");
+//		}
+		
+		
 		
 		// make node word by word
 		for(Node n : result) {
@@ -121,7 +197,7 @@ public class LCSubsequence {
 				if (wordStart == 0) {
 					continue;
 				}
-				c = a.charAt(wordStart);
+				c = b.charAt(wordStart);
 				if(c != ' ' && c != '\n') {
 					c = b.charAt(wordStart - 1);
 					while (c != ' ' && c != '\n') {
@@ -200,6 +276,17 @@ public class LCSubsequence {
 			}
 		}
 		
+		
+//		// print out nodes that CHANGED
+//    	for(Map.Entry<Node, Node> entry: changedResult.entrySet()) {
+//    		Node key = entry.getKey();
+//    		Node value = entry.getValue();
+//    		
+//    		System.out.println(key.toString());
+//    		System.out.println(value.toString());
+//    		System.out.println("============================================== after word");
+//    	}
+				
 		return result;
 //		return sb.reverse().toString();
 		

@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
@@ -126,7 +128,16 @@ public class MainWindowController {
 			rightModel.setSB(rightController.getEditPanel().getContent());
 			
 			LinkedList<Node> r = LCSubsequence.getDiff(leftModel.getSB().toString(),rightModel.getSB().toString());
-			
+			HashMap<Node, Node> changedResult = LCSubsequence.changedResult;
+			// print out nodes that CHANGED
+	    	for(Map.Entry<Node, Node> entry: changedResult.entrySet()) {
+	    		Node key = entry.getKey();
+	    		Node value = entry.getValue();
+	    		
+	    		System.out.println(key.toString());
+	    		System.out.println(value.toString());
+	    		System.out.println("============================================== after word");
+	    	}
 			
 //			System.out.println(leftBuffer.getStringBuffer().toString());
 //			System.out.println(rightBuffer.getStringBuffer().toString());
@@ -177,10 +188,10 @@ public class MainWindowController {
 					String str = rightController.getEditPanel().getContent();
 		            leftController.getEditPanel().setContent(str);
 		            MainWindowModel.setIsCompared(false);
-					//»ç¿ëÀÚ°¡ merge ÇÏ¸é string À» ¿ÞÂÊ modelÀÇ stringbuffer¿¡ ³ÖÀ½, modified ¸¦ true·Î ¼³Á¤, updateEditpanel È£Ãâ.
+					//ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ merge ï¿½Ï¸ï¿½ string ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ modelï¿½ï¿½ stringbufferï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, modified ï¿½ï¿½ trueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, updateEditpanel È£ï¿½ï¿½.
 					leftModel.setIsModified(true);
 					leftController.updateEditPanel();
-					//ÇØ´ç ÁÙÀÇ ÇÏÀÌ¶óÀÌÆ® Áö¿ò(compare ´Ù½ÃÇÏ¸é ÇØ°á°¡´É)
+					//ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(compare ï¿½Ù½ï¿½ï¿½Ï¸ï¿½ ï¿½Ø°á°¡ï¿½ï¿½)
 					this.compare();
 				}
 			}else if (MainWindowModel.getIsCompared()) {
@@ -192,10 +203,10 @@ public class MainWindowController {
 					String str = rightController.getEditPanel().getContent();
 		            leftController.getEditPanel().setContent(str);
 		            MainWindowModel.setIsCompared(false);
-					//»ç¿ëÀÚ°¡ merge ÇÏ¸é string À» ¿ÞÂÊ modelÀÇ stringbuffer ¼öÁ¤, modified ¸¦ true·Î ¼³Á¤, updateEditpanel È£Ãâ.
+					//ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ merge ï¿½Ï¸ï¿½ string ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ modelï¿½ï¿½ stringbuffer ï¿½ï¿½ï¿½ï¿½, modified ï¿½ï¿½ trueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, updateEditpanel È£ï¿½ï¿½.
 					rightModel.setIsModified(true);
 					rightController.updateEditPanel();
-					//ÇØ´ç ÁÙÀÇ ÇÏÀÌ¶óÀÌÆ® Áö¿ò(compare ´Ù½ÃÇÏ¸é ÇØ°á°¡´É)
+					//ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½(compare ï¿½Ù½ï¿½ï¿½Ï¸ï¿½ ï¿½Ø°á°¡ï¿½ï¿½)
 					this.compare();
 					
 					

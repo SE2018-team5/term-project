@@ -34,7 +34,7 @@ public class Node {
     public String toString() {
     	StringBuffer temp = new StringBuffer();
     	if (this.flag == Node.DUMMY) {
-			return "";
+    		temp.append(leftIndex + "," + "DUMMY" + rightIndex + "\n");
 		}
 		if (this.flag == Node.DELETE) {
 			temp.append(leftIndex + "," + (leftIndex + context.length()) + "d" + rightIndex + "\n");
