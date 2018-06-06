@@ -114,6 +114,12 @@ public class LCSubsequence {
 			System.out.println(n.toString());
 		}
 		
+
+		// make node word by word
+		for(Node n : result) {
+			setNodeByWord(a, b, n);
+		}
+		
 		changedResult = new HashMap<>();
 		
 		// find changed words
@@ -162,10 +168,6 @@ public class LCSubsequence {
 //			System.out.println("============================================== before word");
 //		}
 		
-		// make node word by word
-		for(Node n : result) {
-			setNodeByWord(a, b, n);
-		}
 		
 
 		for(Map.Entry<Node, Node> entry : changedResult.entrySet()) {
