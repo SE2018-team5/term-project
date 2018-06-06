@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -26,6 +27,9 @@ public class MainWindowController {
 	EditPanelModel leftModel;
 	EditPanelModel rightModel;
 	javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter;
+	javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainterGreen;
+	ArrayList<Object> highlighterLeftList;
+	ArrayList<Object> highlighterRightList;
 
 	/**
 	 * Launch the application.
@@ -78,8 +82,14 @@ public class MainWindowController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			highlighterLeftList = new ArrayList();
+			highlighterRightList = new ArrayList();
+			leftController.getEditPanel().getEditorPane().getHighlighter().removeAllHighlights();
+			rightController.getEditPanel().getEditorPane().getHighlighter().removeAllHighlights();
+			
 			highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
-
+			highlightPainterGreen = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+			
 			leftModel.setSB(leftController.getEditPanel().getContent());
 			rightModel.setSB(rightController.getEditPanel().getContent());
 
@@ -108,40 +118,85 @@ public class MainWindowController {
 				}
 			}
 
-			for (Node e1 : resultList) {
-				if (e1.flag == Node.DELETE) {
-					System.out.println("DELETE\n");
-					try {
-						leftController.getEditPanel().getEditorPane().getHighlighter().
-						addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);
-					} catch (BadLocationException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-				}
-				if (e1.flag == Node.ADD) {
-					System.out.println("ADD\n");
-					try {
-						rightController.getEditPanel().getEditorPane().getHighlighter().
-						addHighlight(e1.rightIndex, e1.rightIndex + e1.context.length(), highlightPainter);
-					} catch (BadLocationException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-				}
-				System.out.println(e1.toString());
-			}
+//			for (Node e1 : resultList) {
+//				if (e1.flag == Node.DELETE) {
+//					System.out.println("DELETE\n");
+//					try {
+//						leftController.getEditPanel().getEditorPane().getHighlighter().
+//						addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);
+//					} catch (BadLocationException e2) {
+//						// TODO Auto-generated catch block
+//						e2.printStackTrace();
+//					}
+//				}
+//				if (e1.flag == Node.ADD) {
+//					System.out.println("ADD\n");
+//					try {
+//						rightController.getEditPanel().getEditorPane().getHighlighter().
+//						addHighlight(e1.rightIndex, e1.rightIndex + e1.context.length(), highlightPainter);
+//					} catch (BadLocationException e2) {
+//						// TODO Auto-generated catch block
+//						e2.printStackTrace();
+//					}
+//				}
+//				System.out.println(e1.toString());
+//			}
+			
 			model.setNodeNumZero();
 			Node nodeLeft = model.getLeftList().get(model.getNodeNum());
 			Node nodeRight = model.getRightList().get(model.getNodeNum());
-			try {
-				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
-				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
-				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
-			} catch (BadLocationException ex) {
-				// TODO Auto-generated catch block
-				ex.printStackTrace();
+			highlightPainterGreen = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+			for (Node n : model.getLeftList()) {
+				if (!n.equals(nodeLeft)) {
+					try {
+						highlighterLeftList.add(leftController.getEditPanel().getEditorPane().getHighlighter()
+								.addHighlight(n.leftIndex, n.leftIndex + n.context.length(), highlightPainter));
+						
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+					
+				} else {
+					try {
+						highlighterLeftList.add(leftController.getEditPanel().getEditorPane().getHighlighter()
+								.addHighlight(n.leftIndex, n.leftIndex + n.context.length(), highlightPainterGreen));
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+				}
 			}
+			
+			for (Node n : model.getRightList()) {
+				if (!n.equals(nodeRight)) {
+					try {
+						highlighterRightList.add(rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(n.rightIndex, n.rightIndex + n.context.length(), highlightPainter));
+						
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+					
+				} else {
+					try {
+						highlighterRightList.add(rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(n.rightIndex, n.rightIndex + n.context.length(), highlightPainterGreen));
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+				}
+			}
+//			
+//			try {
+//				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainterGreen);
+//				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainterGreen);
+//			} catch (BadLocationException ex) {
+//				// TODO Auto-generated catch block
+//				ex.printStackTrace();
+//			}
 			model.setIsCompared(true);
 			model.setIsHighlighted(true); 
 		}
@@ -167,16 +222,13 @@ public class MainWindowController {
 				String head = null, mid = null, tail = null;
 
 				//2. 0부터 leftinx 까지 string 
-				if(model.getLeftList().get(idx).leftIndex == 0) {
-					head = "";//0보다 작을경우 exception
-				}else {
-					head = leftModel.getSB().toString().substring(0, leftidx);
-				}
+				
+				head = leftModel.getSB().toString().substring(0, leftidx);
 				// 오른쪽 패널 (flag가 ADD인 노드들)에서 해당 idx의 context 
 				mid = model.getRightList().get(idx).context.toString();  
 
 				// 왼쪽 패널 (flag가 DELETE인 노드들)에서 해당 idx의 rightindex부터 file의 끝까지.
-				tail = leftModel.getSB().toString().substring(leftidx + mid.length());
+				tail = leftModel.getSB().toString().substring(leftidx);
 
 				// leftpanel의 전체 string update.
 				head=head.concat(mid);
@@ -191,9 +243,16 @@ public class MainWindowController {
 			}
 		}
 		public void compare() {
+			leftController.getEditPanel().getEditorPane().getHighlighter().removeAllHighlights();
+			rightController.getEditPanel().getEditorPane().getHighlighter().removeAllHighlights();
+			
+			highlighterLeftList.clear();
+			highlighterRightList.clear();
+			
 			highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
 			leftModel.setSB(leftController.getEditPanel().getContent());
 			rightModel.setSB(rightController.getEditPanel().getContent());
+			
 
 			LinkedList<Node> resultList = LCSubsequence.getDiff(leftModel.getSB().toString(),rightModel.getSB().toString());
 			if(resultList == null) {
@@ -221,7 +280,7 @@ public class MainWindowController {
 			}
 
 
-			for (Node e1 : resultList) {
+			/*for (Node e1 : resultList) {
 				if (e1.flag == Node.DELETE) {
 					System.out.println("DELETE\n");
 					try {
@@ -243,17 +302,65 @@ public class MainWindowController {
 					}
 				}
 				System.out.println(e1.toString());
-			}
+			}*/
+			
+			
 			Node nodeLeft = model.getLeftList().get(model.getNodeNum());
 			Node nodeRight = model.getRightList().get(model.getNodeNum());
-			try {
-				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
-				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
-				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
-			} catch (BadLocationException ex) {
-				// TODO Auto-generated catch block
-				ex.printStackTrace();
+			
+			highlightPainterGreen = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+			for (Node n : model.getLeftList()) {
+				if (!n.equals(nodeLeft)) {
+					try {
+						highlighterLeftList.add(leftController.getEditPanel().getEditorPane().getHighlighter()
+								.addHighlight(n.leftIndex, n.leftIndex + n.context.length(), highlightPainter));
+						
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+					
+				} else {
+					try {
+						highlighterLeftList.add(leftController.getEditPanel().getEditorPane().getHighlighter()
+								.addHighlight(n.leftIndex, n.leftIndex + n.context.length(), highlightPainterGreen));
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+				}
 			}
+			
+			for (Node n : model.getRightList()) {
+				if (!n.equals(nodeRight)) {
+					try {
+						highlighterRightList.add(rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(n.rightIndex, n.rightIndex + n.context.length(), highlightPainter));
+						
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+					
+				} else {
+					try {
+						highlighterRightList.add(rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(n.rightIndex, n.rightIndex + n.context.length(), highlightPainterGreen));
+					} catch (BadLocationException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+				}
+			}
+			
+//			try {
+//				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+//				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
+//				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+//			} catch (BadLocationException ex) {
+//				// TODO Auto-generated catch block
+//				ex.printStackTrace();
+//			}
 			model.setIsCompared(true);
 			model.setIsHighlighted(true);
 
@@ -300,8 +407,17 @@ public class MainWindowController {
 			Node nodeRight = model.getRightList().get(model.getNodeNum());
 			try {
 				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
-				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
-				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+				leftController.getEditPanel().getEditorPane().getHighlighter()
+					.removeHighlight(highlighterLeftList.get(model.getNodeNum()));
+				highlighterLeftList.set(model.getNodeNum(), 
+						leftController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter));
+				
+				rightController.getEditPanel().getEditorPane().getHighlighter()
+					.removeHighlight(highlighterRightList.get(model.getNodeNum()));
+				highlighterRightList.set(model.getNodeNum(), 
+						rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter));
 			} catch (BadLocationException ex) {
 				// TODO Auto-generated catch block
 				ex.printStackTrace();
@@ -314,8 +430,16 @@ public class MainWindowController {
 			rightController.getEditPanel().setScrollBar(nodeRight.rightIndex);
 			try {
 				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
-				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
-				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+				leftController.getEditPanel().getEditorPane().getHighlighter()
+					.removeHighlight(highlighterLeftList.get(model.getNodeNum()));
+				highlighterLeftList.set(model.getNodeNum(), 
+						leftController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter));
+				
+				rightController.getEditPanel().getEditorPane().getHighlighter().removeHighlight(highlighterRightList.get(model.getNodeNum()));
+				highlighterRightList.set(model.getNodeNum(), 
+						rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter));
 			} catch (BadLocationException ex) {
 				// TODO Auto-generated catch block
 				ex.printStackTrace();
@@ -335,8 +459,17 @@ public class MainWindowController {
 			Node nodeRight = model.getRightList().get(model.getNodeNum());
 			try {
 				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
-				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
-				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+				leftController.getEditPanel().getEditorPane().getHighlighter()
+					.removeHighlight(highlighterLeftList.get(model.getNodeNum()));
+				highlighterLeftList.set(model.getNodeNum(), 
+						leftController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter));
+				
+				rightController.getEditPanel().getEditorPane().getHighlighter()
+					.removeHighlight(highlighterRightList.get(model.getNodeNum()));
+				highlighterRightList.set(model.getNodeNum(), 
+						rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter));
 			} catch (BadLocationException ex) {
 				// TODO Auto-generated catch block
 				ex.printStackTrace();
@@ -349,8 +482,17 @@ public class MainWindowController {
 			rightController.getEditPanel().setScrollBar(nodeRight.rightIndex);
 			try {
 				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
-				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
-				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+				leftController.getEditPanel().getEditorPane().getHighlighter()
+					.removeHighlight(highlighterLeftList.get(model.getNodeNum()));
+				highlighterLeftList.set(model.getNodeNum(), 
+						leftController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter));
+				
+				rightController.getEditPanel().getEditorPane().getHighlighter()
+					.removeHighlight(highlighterRightList.get(model.getNodeNum()));
+				highlighterRightList.set(model.getNodeNum(), 
+						rightController.getEditPanel().getEditorPane().getHighlighter()
+							.addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter));
 			} catch (BadLocationException ex) {
 				// TODO Auto-generated catch block
 				ex.printStackTrace();

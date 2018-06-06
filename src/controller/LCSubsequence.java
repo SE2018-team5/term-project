@@ -131,12 +131,12 @@ public class LCSubsequence {
 				ret.add(n1);
 				Node left = null;
 				
-				for(Node n2 : result) {
-					if(n2.flag == Node.DELETE && n2.leftIndex == n1.leftIndex) {
-						left = n2;
-						continue;
-					}
-				}
+//				for(Node n2 : result) {
+//					if(n2.flag == Node.DELETE && n2.leftIndex == n1.leftIndex) {
+//						left = n2;
+//						continue;
+//					}
+//				}
 				if(ret.contains(left)) 
 					continue;
 				
@@ -158,12 +158,12 @@ public class LCSubsequence {
 			if(n1.flag == Node.DELETE) {
 				Node right = null;
 				ret.add(n1);
-				for(Node n2 : result) {
-					if(n2.flag == Node.ADD && n2.rightIndex == n1.rightIndex) {
-						right = n2;
-						continue;
-					}
-				}
+//				for(Node n2 : result) {
+//					if(n2.flag == Node.ADD && n2.rightIndex == n1.rightIndex) {
+//						right = n2;
+//						continue;
+//					}
+//				}
 				
 				if(ret.contains(right)) 
 					continue;
