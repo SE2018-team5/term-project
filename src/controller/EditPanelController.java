@@ -1,7 +1,10 @@
 package controller;
 
+import java.awt.Adjustable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,7 +49,7 @@ public class EditPanelController {
 			String line;
 			
 
-			if (result == JFileChooser.APPROVE_OPTION) // ÆÄÀÏÀ» ¼±ÅÃÇÏ°í ¿­¾úÀ»¶§ ÀÌº¥Æ®
+			if (result == JFileChooser.APPROVE_OPTION) // íŒŒì¼ì„ ì„ íƒí•˜ê³  ì—´ì—ˆì„ë•Œ ì´ë²¤íŠ¸
 			{
 				try {
 					File file = editPanel.getFileDlg().getSelectedFile();
@@ -60,7 +63,7 @@ public class EditPanelController {
 					
 					editPanel.getFilePathTextField().setText(file.getPath());
 					editPanel.setContent(str);
-					editPanel.setEditorPaneNotEditable(); // ¼öÁ¤ ºÒ°¡
+					editPanel.setEditorPaneNotEditable(); // ìˆ˜ì • ë¶ˆê°€
 					text = new StringBuffer(str);
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
@@ -121,9 +124,11 @@ public class EditPanelController {
 		}
 		
 	}
+	
 	public EditPanel getEditPanel() {
 		// TODO Auto-generated method stub
 		return this.editPanel;
+		
 	}
 	public void setStringBuffer(String s) {
 		text.delete(0, text.length());
@@ -139,4 +144,5 @@ public class EditPanelController {
 		}
 		
 	}
+	
 }

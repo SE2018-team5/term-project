@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentListener;
 import java.io.File;
 
 import javax.swing.BoxLayout;
@@ -82,12 +83,15 @@ public class EditPanel extends JPanel{
 	public Boolean isEditable() {
 		return this.editorPane.isEditable();
 	}
+	public void setScrollBar(int index) {
+		this.scrollPane.getVerticalScrollBar().setValue(index);
+	}
 
 	EditPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fileDlg = new JFileChooser();
-		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt ∆ƒ¿œ∏∏ ∫∏¿Ã∞‘
-		fileDlg.setMultiSelectionEnabled(false);//¥Ÿ¡ﬂ º±≈√ ∫“∞°
+		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt ÌååÏùºÎßå Î≥¥Ïù¥Í≤å
+		fileDlg.setMultiSelectionEnabled(false);//Îã§Ï§ë ÏÑ†ÌÉù Î∂àÍ∞Ä
 		fileDlg.setCurrentDirectory(new File(System.getProperty("user.dir") + "//" + "data"));
 
 		// three button panel
@@ -151,6 +155,6 @@ public class EditPanel extends JPanel{
 	public void addEditActionListener(ActionListener listenerForEditAction) {
 		btnEdit.addActionListener(listenerForEditAction);
 	}
-
+	
 
 }

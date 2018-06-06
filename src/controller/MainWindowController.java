@@ -23,8 +23,8 @@ public class MainWindowController {
 	EditPanelController rightController;
 	EditPanelModel leftModel;
 	EditPanelModel rightModel;
-//	StringBufferModel leftBuffer;
-//	StringBufferModel rightBuffer;
+	javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter;
+
 	/**
 	 * Launch the application.
 	 */
@@ -44,101 +44,74 @@ public class MainWindowController {
 			}
 		});
 	}
-	
-	public void isBothLoaded() {
-		if(leftController.getEditPanelModel().getIsLoaded() && rightController.getEditPanelModel().getIsLoaded()) {
-			this.view.getMergePanel().setBtnsEnable();
-		}
-	}
 
+	//mvc pattern
 	MainWindowController(MainWindowView v, MainWindowModel m, EditPanelModel left, EditPanelModel right) {
 		this.view = v;
 		this.model = m;
 		this.leftModel = left;
 		this.rightModel = right;
-		
+
 		leftController = new EditPanelController(view.getLeftPanel(),this, left);
 		rightController = new EditPanelController(view.getRightPanel(), this, right);
-		
+
 		this.view.getMergePanel().addCmpActionListener(new CmpActionListener());
 		this.view.getMergePanel().addCopyToLeftActionListener(new CopyToLeftActionListener());
 		this.view.getMergePanel().addCopyToRightActionListener(new CopyToRightActionListener());
 		this.view.getMergePanel().addUpActionListener(new UpActionListener());
 		this.view.getMergePanel().addDownActionListener(new DownActionListener());
-		
-//		leftBuffer = new StringBufferModel(leftController.getEditPanel().getContent());
-//		rightBuffer = new StringBufferModel(rightController.getEditPanel().getContent());
-		//Set Left/Right StringBuffer
+
 	}
 
-	public void compare() {
-		javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(
-				Color.RED);
-		leftModel.setSB(leftController.getEditPanel().getContent());
-		rightModel.setSB(rightController.getEditPanel().getContent());
-		
-		LinkedList<Node> r = LCSubsequence.getDiff(leftModel.getSB().toString(),rightModel.getSB().toString());
-		
-		System.out.println(leftModel.getSB().toString());
-		System.out.println(rightModel.getSB().toString());
-		
-		for (Node e1 : r) {
-			if (e1.flag == Node.DELETE) {
-				System.out.println("DELETE\n");
-				try {
-					leftController.getEditPanel().getEditorPane().getHighlighter().
-							addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);
-				} catch (BadLocationException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-			}
-			if (e1.flag == Node.ADD) {
-				System.out.println("ADD\n");
-				try {
-					rightController.getEditPanel().getEditorPane().getHighlighter().
-							addHighlight(e1.rightIndex, e1.rightIndex + e1.context.length(), highlightPainter);
-				} catch (BadLocationException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-				}
-			}
-			System.out.println(e1.toString());
-		}
-		MainWindowModel.compared();
-		MainWindowModel.highlighted(); 
-	}
-	
+	/**
+	 * Compare Î≤ÑÌäº ÎàåÎ†∏ÏùÑ Îïå Ï≤òÎ¶¨ÌïòÎäî ActionListener
+	 * 1. Îπ®Í∞ÑÏÉâ ÌïòÏù¥ÎùºÏù¥ÌÑ∞ Ï§ÄÎπÑ
+	 * 2. ÏñëÏ™Ω editPanelModelÏùò StringBufferÏóê ÎÇ¥Ïö© ÎåÄÏûÖ
+	 * 3. Î¨∏Ïû• Î∂ÑÏÑù ÌõÑ resultListÏóê ÎÖ∏ÎìúÎ¶¨Ïä§Ìä∏ ÎåÄÏûÖ
+	 * 4. ÏôºÏ™ΩÏùò ÎÖ∏ÎìúÏôÄ Ïò§Î•∏Ï™ΩÏùò ÎÖ∏ÎìúÍ∞Ä 1ÎåÄ1Î°ú ÎåÄÏùëÎêòÎèÑÎ°ù ÎÖ∏ÎìúÎ¶¨Ïä§Ìä∏ Î∂ÑÎ¶¨
+	 * 5. 
+	 */
 	class CmpActionListener implements ActionListener {
-
-		javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(
-				Color.RED);
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			LCSubsequence l = new LCSubsequence();
+			highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
 
-			
-//			leftBuffer.setStringBuffer(leftController.getEditPanel().getContent());
-//			rightBuffer.setStringBuffer(rightController.getEditPanel().getContent());
 			leftModel.setSB(leftController.getEditPanel().getContent());
 			rightModel.setSB(rightController.getEditPanel().getContent());
-			
-			LinkedList<Node> r = LCSubsequence.getDiff(leftModel.getSB().toString(),rightModel.getSB().toString());
-			
-			
-//			System.out.println(leftBuffer.getStringBuffer().toString());
-//			System.out.println(rightBuffer.getStringBuffer().toString());
-			System.out.println(leftModel.getSB().toString());
-			System.out.println(rightModel.getSB().toString());
-			
-			for (Node e1 : r) {
+
+			LinkedList<Node> resultList = LCSubsequence.getDiff(leftModel.getSB().toString(),rightModel.getSB().toString());
+			if(resultList == null) {
+				System.out.println("List Error");
+				return;
+			}
+			model.setResultList(resultList);
+
+			model.leftList = new LinkedList<Node>();
+			model.rightList = new LinkedList<Node>();
+			for(Node e1 : resultList) {
+				if(e1.flag == Node.DUMMY) {
+					if(e1.leftIndex == -1) {
+						model.add("right", e1);
+					}else {
+						model.add("left", e1);
+					}
+				}else {
+					if(e1.flag == Node.ADD ) {
+						model.add("right",e1);
+					}else {
+						model.add("left",e1);
+					}
+				}
+			}
+
+			for (Node e1 : resultList) {
 				if (e1.flag == Node.DELETE) {
 					System.out.println("DELETE\n");
 					try {
 						leftController.getEditPanel().getEditorPane().getHighlighter().
-								addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);
+						addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);
 					} catch (BadLocationException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
@@ -148,7 +121,7 @@ public class MainWindowController {
 					System.out.println("ADD\n");
 					try {
 						rightController.getEditPanel().getEditorPane().getHighlighter().
-								addHighlight(e1.rightIndex, e1.rightIndex + e1.context.length(), highlightPainter);
+						addHighlight(e1.rightIndex, e1.rightIndex + e1.context.length(), highlightPainter);
 					} catch (BadLocationException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
@@ -156,69 +129,102 @@ public class MainWindowController {
 				}
 				System.out.println(e1.toString());
 			}
-			MainWindowModel.compared();
-			MainWindowModel.highlighted(); 
+			model.setNodeNumZero();
+			Node nodeLeft = model.getLeftList().get(model.getNodeNum());
+			Node nodeRight = model.getRightList().get(model.getNodeNum());
+			try {
+				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
+				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+			} catch (BadLocationException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+			model.setIsCompared(true);
+			model.setIsHighlighted(true); 
 		}
-		
+
 	}
 
 	class CopyToLeftActionListener implements ActionListener {
 
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			MainWindowModel.setIsHighlighted(false);
-			
-			if (!MainWindowModel.getIsCompared()) {
-				int answer = JOptionPane.showConfirmDialog(null, "Files are not compared yet. Still want to merge?",
-						"Warning", JOptionPane.WARNING_MESSAGE);
-				if (answer == JOptionPane.OK_OPTION) {
-					//need to listen up&down button action
-					String str = rightController.getEditPanel().getContent();
-		            leftController.getEditPanel().setContent(str);
-		            MainWindowModel.setIsCompared(false);
-					//ªÁøÎ¿⁄∞° merge «œ∏È string ¿ª øﬁ¬  model¿« stringbufferø° ≥÷¿Ω, modified ∏¶ true∑Œ º≥¡§, updateEditpanel »£√‚.
-					leftModel.setIsModified(true);
-					leftController.updateEditPanel();
-					//«ÿ¥Á ¡Ÿ¿« «œ¿Ã∂Û¿Ã∆Æ ¡ˆøÚ(compare ¥ŸΩ√«œ∏È «ÿ∞·∞°¥…)
-					this.compare();
+			model.setIsHighlighted(false);
+			int answer = JOptionPane.showConfirmDialog(null, "Files are not compared yet. Still want to merge?",
+					"Warning", JOptionPane.WARNING_MESSAGE);
+			if (answer == JOptionPane.OK_OPTION) {
+				//need to listen up&down button action
+
+				//1. UP/DOWN Ïù¥ Í∞ÄÎ¶¨ÌÇ§Îäî NODEÏùò Î≤àÌò∏ 
+				int idx = model.getNodeNum();//Î™á Î≤àÏß∏ ÎÖ∏ÎìúÏù∏ÏßÄ UP/DOWNÏù¥ Í∞ÄÎ¶¨ÌÇ§Îäî nodeNum ÎåÄÏûÖ
+				int leftidx = model.getLeftList().get(idx).leftIndex;
+				int rightidx = model.getRightList().get(idx).rightIndex;
+				String head = null, mid = null, tail = null;
+
+				//2. 0Î∂ÄÌÑ∞ leftinx ÍπåÏßÄ string 
+				if(model.getLeftList().get(idx).leftIndex == 0) {
+					head = "";//0Î≥¥Îã§ ÏûëÏùÑÍ≤ΩÏö∞ exception
+				}else {
+					head = leftModel.getSB().toString().substring(0, leftidx);
 				}
-			}else if (MainWindowModel.getIsCompared()) {
-				MainWindowModel.setIsCompared(false);
-				int answer = JOptionPane.showConfirmDialog(null, "Hightlighted words will be initialized, Still want to merge?",
-						"Warning", JOptionPane.WARNING_MESSAGE);
-				if (answer == JOptionPane.OK_OPTION) {
-					//need to listen up&down button action
-					String str = rightController.getEditPanel().getContent();
-		            leftController.getEditPanel().setContent(str);
-		            MainWindowModel.setIsCompared(false);
-					//ªÁøÎ¿⁄∞° merge «œ∏È string ¿ª øﬁ¬  model¿« stringbuffer ºˆ¡§, modified ∏¶ true∑Œ º≥¡§, updateEditpanel »£√‚.
-					rightModel.setIsModified(true);
-					rightController.updateEditPanel();
-					//«ÿ¥Á ¡Ÿ¿« «œ¿Ã∂Û¿Ã∆Æ ¡ˆøÚ(compare ¥ŸΩ√«œ∏È «ÿ∞·∞°¥…)
-					this.compare();
-					
-					
-				}
+				// Ïò§Î•∏Ï™Ω Ìå®ÎÑê (flagÍ∞Ä ADDÏù∏ ÎÖ∏ÎìúÎì§)ÏóêÏÑú Ìï¥Îãπ idxÏùò context 
+				mid = model.getRightList().get(idx).context.toString();  
+
+				// ÏôºÏ™Ω Ìå®ÎÑê (flagÍ∞Ä DELETEÏù∏ ÎÖ∏ÎìúÎì§)ÏóêÏÑú Ìï¥Îãπ idxÏùò rightindexÎ∂ÄÌÑ∞ fileÏùò ÎÅùÍπåÏßÄ.
+				tail = leftModel.getSB().toString().substring(leftidx + mid.length());
+
+				// leftpanelÏùò Ï†ÑÏ≤¥ string update.
+				head=head.concat(mid);
+				head=head.concat(tail);
+				leftModel.setSB(head);
+				model.setIsCompared(false);
+				//ÏÇ¨Ïö©ÏûêÍ∞Ä merge ÌïòÎ©¥ string ÏùÑ ÏôºÏ™Ω modelÏùò stringbufferÏóê ÎÑ£Ïùå, modified Î•º trueÎ°ú ÏÑ§Ï†ï, updateEditpanel Ìò∏Ï∂ú.
+				leftModel.setIsModified(true);
+				leftController.updateEditPanel();
+				//Ìï¥Îãπ Ï§ÑÏùò ÌïòÏù¥ÎùºÏù¥Ìä∏ ÏßÄÏõÄ(compare Îã§ÏãúÌïòÎ©¥ Ìï¥Í≤∞Í∞ÄÎä•)
+				this.compare();
 			}
 		}
 		public void compare() {
-			javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(
-					Color.RED);
+			highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
 			leftModel.setSB(leftController.getEditPanel().getContent());
 			rightModel.setSB(rightController.getEditPanel().getContent());
-			
-			LinkedList<Node> r = LCSubsequence.getDiff(leftModel.getSB().toString(),rightModel.getSB().toString());
-			
-			System.out.println(leftModel.getSB().toString());
-			System.out.println(rightModel.getSB().toString());
-			
-			for (Node e1 : r) {
+
+			LinkedList<Node> resultList = LCSubsequence.getDiff(leftModel.getSB().toString(),rightModel.getSB().toString());
+			if(resultList == null) {
+				System.out.println("List Error");
+				return;
+			}
+			model.setResultList(resultList);
+
+			model.leftList = new LinkedList<Node>();
+			model.rightList = new LinkedList<Node>();
+			for(Node e1 : resultList) {
+				if(e1.flag == Node.DUMMY) {
+					if(e1.leftIndex == -1) {
+						model.add("right", e1);
+					}else {
+						model.add("left", e1);
+					}
+				}else {
+					if(e1.flag == Node.ADD ) {
+						model.add("right",e1);
+					}else {
+						model.add("left",e1);
+					}
+				}
+			}
+
+
+			for (Node e1 : resultList) {
 				if (e1.flag == Node.DELETE) {
 					System.out.println("DELETE\n");
 					try {
 						leftController.getEditPanel().getEditorPane().getHighlighter().
-								addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);
+						addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);
 					} catch (BadLocationException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
@@ -228,7 +234,7 @@ public class MainWindowController {
 					System.out.println("ADD\n");
 					try {
 						rightController.getEditPanel().getEditorPane().getHighlighter().
-								addHighlight(e1.rightIndex, e1.rightIndex + e1.context.length(), highlightPainter);
+						addHighlight(e1.rightIndex, e1.rightIndex + e1.context.length(), highlightPainter);
 					} catch (BadLocationException e2) {
 						// TODO Auto-generated catch block
 						e2.printStackTrace();
@@ -236,8 +242,19 @@ public class MainWindowController {
 				}
 				System.out.println(e1.toString());
 			}
-			MainWindowModel.compared();
-			MainWindowModel.highlighted(); 
+			Node nodeLeft = model.getLeftList().get(model.getNodeNum());
+			Node nodeRight = model.getRightList().get(model.getNodeNum());
+			try {
+				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
+				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+			} catch (BadLocationException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+			model.setIsCompared(true);
+			model.setIsHighlighted(true);
+
 		}
 	}
 
@@ -246,24 +263,24 @@ public class MainWindowController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			MainWindowModel.setIsHighlighted(false);
+			model.setIsHighlighted(false);
 
-			if (!MainWindowModel.getIsCompared()) {
+			if (!model.getIsCompared()) {
 				int answer = JOptionPane.showConfirmDialog(null, "Files are not compared yet. Still want to merge?",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				if (answer == JOptionPane.OK_OPTION) {
 					String str = leftController.getEditPanel().getContent();
-		            rightController.getEditPanel().setContent(str);
-		            MainWindowModel.setIsCompared(false);
+					rightController.getEditPanel().setContent(str);
+					model.setIsCompared(false);
 				}
-			}else if (MainWindowModel.getIsCompared()) {
-				MainWindowModel.setIsCompared(false);
+			}else if (model.getIsCompared()) {
+				model.setIsCompared(false);
 				int answer = JOptionPane.showConfirmDialog(null, "Hightlighted words will be initialized, Still want to merge?",
 						"Warning", JOptionPane.WARNING_MESSAGE);
 				if (answer == JOptionPane.OK_OPTION) {
 					String str = leftController.getEditPanel().getContent();
-		            rightController.getEditPanel().setContent(str);
-		            MainWindowModel.setIsCompared(false);
+					rightController.getEditPanel().setContent(str);
+					model.setIsCompared(false);
 				}
 			}
 		}
@@ -274,17 +291,75 @@ public class MainWindowController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			
+			if(model.getNodeNum() == 0) {
+				return;
+			}
+			Node nodeLeft = model.getLeftList().get(model.getNodeNum());
+			Node nodeRight = model.getRightList().get(model.getNodeNum());
+			try {
+				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
+				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
+				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+			} catch (BadLocationException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+
+			model.decreaseNodeNum();
+			nodeLeft = model.getLeftList().get(model.getNodeNum());
+			nodeRight = model.getRightList().get(model.getNodeNum());
+			leftController.getEditPanel().setScrollBar(nodeLeft.leftIndex);
+			rightController.getEditPanel().setScrollBar(nodeRight.rightIndex);
+			try {
+				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
+				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+			} catch (BadLocationException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
 		}
-		
+
 	}
 	class DownActionListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			
+			if(model.getNodeNum() == model.getLeftList().size()-1) {
+				return;
+			}
+			Node nodeLeft = model.getLeftList().get(model.getNodeNum());
+			Node nodeRight = model.getRightList().get(model.getNodeNum());
+			try {
+				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.RED);
+				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
+				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+			} catch (BadLocationException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+
+			model.increaseNodeNum();
+			nodeLeft = model.getLeftList().get(model.getNodeNum());
+			nodeRight = model.getRightList().get(model.getNodeNum());
+			leftController.getEditPanel().setScrollBar(nodeLeft.leftIndex);
+			rightController.getEditPanel().setScrollBar(nodeRight.rightIndex);
+			try {
+				highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(Color.GREEN);
+				leftController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeLeft.leftIndex, nodeLeft.leftIndex + nodeLeft.context.length(), highlightPainter);
+				rightController.getEditPanel().getEditorPane().getHighlighter().addHighlight(nodeRight.rightIndex, nodeRight.rightIndex + nodeRight.context.length(), highlightPainter);
+			} catch (BadLocationException ex) {
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
 		}
-		
+
+	}
+	
+	public void isBothLoaded() {
+		if(leftController.getEditPanelModel().getIsLoaded() && rightController.getEditPanelModel().getIsLoaded()) {
+			this.view.getMergePanel().setBtnsEnable();
+		}
 	}
 }

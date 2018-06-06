@@ -1,34 +1,71 @@
 package model;
 
+import java.util.LinkedList;
+
 public class MainWindowModel {
 
-	private static Boolean isBothLoaded = false;
-	private static Boolean isCompared = false;
-	private static Boolean isHighlighted = false;
+	private Boolean isBothLoaded = false;
+	private Boolean isCompared = false;
+	private Boolean isHighlighted = false;
+	private LinkedList<Node> resultList=null;
+	public LinkedList<Node> leftList = null;
+	public LinkedList<Node> rightList = null;
+	private int nodeNum = 0;
 	
-	public static Boolean getIsHighlighted() {
-		return isHighlighted;
+	
+	public void add(String s,Node n) {
+		if(s.compareTo("left")==0) {
+			leftList.add(n);
+		}else if (s.compareTo("right")==0){
+			rightList.add(n);
+		}else {
+			System.out.println("no list");
+		}
 	}
-	public static void setIsHighlighted(Boolean isHighlighted) {
-		MainWindowModel.isHighlighted = isHighlighted;
+	public void setNodeNumZero() {
+		this.nodeNum=0;
 	}
-	public static void setIsBothLoaded(Boolean isLoaded) {
-		MainWindowModel.isBothLoaded = isLoaded;
+	public void increaseNodeNum() {
+		this.nodeNum++;
 	}
-	public static void setIsCompared(Boolean isCompared) {
-		MainWindowModel.isCompared = isCompared;
+	public void decreaseNodeNum() {
+		this.nodeNum--;
 	}
-	public static Boolean getIsBothLoaded() {
-		return isBothLoaded;
+	public int getNodeNum() {
+		return this.nodeNum;
 	}
-	public static Boolean getIsCompared() {
-		return isCompared;
+	public LinkedList<Node> getLeftList(){
+		return this.leftList;
 	}
-	public static void compared() {
-		isCompared = true;
+	public LinkedList<Node> getRightList(){
+		return this.rightList;
 	}
-	public static void highlighted() {
-		isHighlighted = true;
+	public LinkedList<Node> getResultList(){
+		return this.resultList;
+	}
+	public void setResultList(LinkedList<Node> resultList) {
+		this.resultList = resultList;
+	}
+	
+	public Boolean getIsHighlighted() {
+		return this.isHighlighted;
+	}
+	public void setIsHighlighted(Boolean isHighlighted) {
+		this.isHighlighted = isHighlighted;
+	}
+	
+	public void setIsBothLoaded(Boolean isLoaded) {
+		this.isBothLoaded = isLoaded;
+	}
+	public Boolean getIsBothLoaded() {
+		return this.isBothLoaded;
+	}
+	
+	public void setIsCompared(Boolean isCompared) {
+		this.isCompared = isCompared;
+	}
+	public Boolean getIsCompared() {
+		return this.isCompared;
 	}
 	
 }
