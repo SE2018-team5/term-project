@@ -13,47 +13,49 @@ import controller.LCSubsequence;
 import model.Node;
 
 class testLCSubsequence {
-	String[] text1;
-	String[] text2;
+	String text1;
+	String text2;
 
-	ArrayList<LinkedList<Node>> test;
-	Node[][] answer;
-
+	LinkedList<Node> test;
+	
+	Node answer1;
+	Node answer2;
+	Node answer3;
+	Node answer4;
 	@BeforeEach
 	void setUp() throws Exception {
-		text1 = new String[] { "abcd", "bcde", "cdef", "defg", "efgh" };
-		text2 = new String[] { "abcd", "bcde", "cdef", "defg", "efgh" };
+		text1 = new String("abcd\n" + 
+				"a\n" + 
+				"a\n" + 
+				"c\n" + 
+				"\n" + 
+				"d\n" + 
+				"b\n" + 
+				"d" + " abcdefg");
+		text2 = new String("abdd\n" + 
+				"a\n" + 
+				"a\n" + 
+				"d\n" + 
+				"b\n" + 
+				"d" + "abcdefg");
 		
-		answer = new Node[][] { {}, { new Node("a", 2), new Node("e", 1) },
-	        { new Node("ab", 2), new Node("ef", 1) }, { new Node("abc", 2), new Node("efg", 1) },
-	        { new Node("a", 1), new Node("e", 2) }, {}, { new Node("b", 2), new Node("f", 1) },
-	        { new Node("bc", 2), new Node("fg", 1) }, { new Node("ab", 1), new Node("ef", 2) },
-	        { new Node("b", 1), new Node("f", 2) }, {}, { new Node("c", 2), new Node("g", 1) },
-	        { new Node("abc", 1), new Node("efg", 2) }, { new Node("bc", 1), new Node("fg", 2) },
-	        { new Node("c", 1), new Node("g", 2) }, {} };
-
-		test = new ArrayList<LinkedList<Node>>();
+		answer1 = new Node("abcd", 2); // DELETE = 2
+		answer2 = new Node("abdd", 1); // ADD = 1
+		answer3 = new Node("c\n\n", 2);
+		answer4 = new Node(" ", 2);
 		
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				test.add(new LinkedList<Node>(Arrays.asList(answer[i * 4 + j])));
-			}
-		}
+		test = LCSubsequence.getDiff(text1, text2);
+		
 
 	};
 
 	@Test
-	void test() {
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				LinkedList<Node> temp = LCSubsequence.getDiff(text1[i], text2[j]);
-				for(Node element : test.get(i * 4 + j)) {
-					if(temp.peekLast().flag != Node.DUMMY) {
-						assertEquals(element.toString(), temp.pollLast().toString());	
-					}
-				}
-			}
-		}
+	void test() throws Exception {
+		setUp();
+		assertEquals(answer1.context.toString(), test.poll().context.toString());
+		assertEquals(answer2.context.toString(), test.poll().context.toString());
+		assertEquals(answer3.context.toString(), test.poll().context.toString());
+		assertEquals(answer4.context.toString(), test.poll().context.toString());
 	}
 
 }
