@@ -158,6 +158,12 @@ public class LCSubsequence {
 			}
 		}
 		
+		LinkedList<Node> ret = new LinkedList<>();
+		for (Map.Entry<Node, Node> entry : changedResult.entrySet()) {
+			ret.add(entry.getKey());
+			ret.add(entry.getValue());
+		}
+		
 //		// print out nodes that CHANGED
 //		for(Map.Entry<Node, Node> entry: changedResult.entrySet()) {
 //			Node key = entry.getKey();
@@ -198,7 +204,8 @@ public class LCSubsequence {
 //    		System.out.println("============================================== after word");
 //    	}
 				
-		return result;
+		return ret;
+//		return result;
 //		return sb.reverse().toString();
 		
 
