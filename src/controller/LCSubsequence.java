@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import model.MatchNode;
 import model.Node;
 
 public class LCSubsequence {
@@ -120,14 +121,75 @@ public class LCSubsequence {
 			setNodeByWord(a, b, n);
 		}
 		
-		changedResult = new HashMap<>();
+//		changedResult = new HashMap<>();
+//		LinkedList<MatchNode> matchResult = new LinkedList();
+		LinkedList<Node> ret = new LinkedList();
 		
 		// find changed words
 		for(Node n1 : result) {
-			if(changedResult.containsKey(n1) || changedResult.containsValue(n1))
-				continue;
-			
 			if (n1.flag == Node.ADD) {
+				ret.add(n1);
+				Node left = null;
+				
+				for(Node n2 : result) {
+					if(n2.flag == Node.DELETE && n2.leftIndex == n1.leftIndex) {
+						left = n2;
+						continue;
+					}
+				}
+				if(ret.contains(left)) 
+					continue;
+				
+				if(left != null) {
+					ret.add(left);
+//					matchResult.add(new MatchNode(left, n1));
+				} else {
+					ret.add(new Node(new StringBuffer(), n1.leftIndex, -1, Node.DUMMY));
+//					matchResult.add(new MatchNode(left, n1));
+				}
+				
+//				// if n1 is not changed node
+//				if(!changedResult.containsKey(n1)) {
+//					changedResult.put(n1, new Node(new StringBuffer(), n1.leftIndex, -1, Node.DUMMY));
+//					continue;
+//				}
+			}
+			
+			if(n1.flag == Node.DELETE) {
+				Node right = null;
+				ret.add(n1);
+				for(Node n2 : result) {
+					if(n2.flag == Node.ADD && n2.rightIndex == n1.rightIndex) {
+						right = n2;
+						continue;
+					}
+				}
+				
+				if(ret.contains(right)) 
+					continue;
+				
+				if(right != null) {
+					ret.add(right);
+//					matchResult.add(new MatchNode(n1, right));
+				} else {
+					ret.add(new Node(new StringBuffer(), -1, n1.rightIndex, Node.DUMMY));
+//					right = new Node(new StringBuffer(), -1, n1.rightIndex, Node.DUMMY);
+//					matchResult.add(new MatchNode(n1, right));
+				}
+				
+				
+				
+//				// if n1 is not changed node
+//				if(!changedResult.containsValue(n1)) {
+//					changedResult.put(new Node(new StringBuffer(), -1, n1.rightIndex, Node.DUMMY), n1);
+//					continue;
+//				}
+			}
+			
+//			if(changedResult.containsKey(n1) || changedResult.containsValue(n1))
+//				continue;
+			
+			/*if (n1.flag == Node.ADD) {
 				for(Node n2 : result) {
 					if(n2.flag == Node.DELETE && n2.leftIndex == n1.leftIndex) {
 						changedResult.put(n1, n2);
@@ -155,14 +217,14 @@ public class LCSubsequence {
 					changedResult.put(new Node(new StringBuffer(), -1, n1.rightIndex, Node.DUMMY), n1);
 					continue;
 				}
-			}
+			}*/
 		}
 		
-		LinkedList<Node> ret = new LinkedList<>();
-		for (Map.Entry<Node, Node> entry : changedResult.entrySet()) {
-			ret.add(entry.getKey());
-			ret.add(entry.getValue());
-		}
+//		LinkedList<Node> ret = new LinkedList<>();
+//		for (Map.Entry<Node, Node> entry : changedResult.entrySet()) {
+//			ret.add(entry.getKey());
+//			ret.add(entry.getValue());
+//		}
 		
 //		// print out nodes that CHANGED
 //		for(Map.Entry<Node, Node> entry: changedResult.entrySet()) {
@@ -176,7 +238,7 @@ public class LCSubsequence {
 		
 		
 
-		for(Map.Entry<Node, Node> entry : changedResult.entrySet()) {
+//		for(Map.Entry<Node, Node> entry : changedResult.entrySet()) {
 //			Node key = entry.getKey();
 //			Node value = entry.getValue();
 //			
@@ -190,8 +252,8 @@ public class LCSubsequence {
 //			if(dummy == null)
 //				continue;
 //			
-			setDummyNodeByWord(a, b, entry);
-		}
+//			setDummyNodeByWord(a, b, entry);
+//		}
 		
 		
 //		// print out nodes that CHANGED
@@ -205,6 +267,7 @@ public class LCSubsequence {
 //    	}
 				
 		return ret;
+//		return matchResult;
 //		return result;
 //		return sb.reverse().toString();
 		
@@ -344,7 +407,7 @@ public class LCSubsequence {
 		if(node.leftIndex == -1) {
 			// separate by words
 			// scan front-side
-			wordStart = node.rightIndex;
+			wordStart = node.rightIndex - 1;
 			// check if rightIndex is zero
 			if (wordStart < 0 || wordStart == text2.length()) {
 				return;
@@ -372,7 +435,7 @@ public class LCSubsequence {
 			}
 						
 			// scan back-side
-			wordEnd = node.rightIndex;
+			wordEnd = node.rightIndex - 1;
 			
 			// check if wordEnd is out of index
 			if (wordEnd == text2.length() - 1 && wordEnd != 0) {
@@ -402,10 +465,10 @@ public class LCSubsequence {
 			// separate by words
 			
 			// scan front-side
-			wordStart = node.leftIndex;
+			wordStart = node.leftIndex - 1;
 			
 			// check if leftIndex is zero
-			if (wordStart == 0 || wordStart == text2.length()) {
+			if (wordStart < 0 || wordStart == text2.length()) {
 				return;
 			}
 			
@@ -433,7 +496,7 @@ public class LCSubsequence {
 			}
 			
 			// scan back-side
-			wordEnd = wordStart + node.context.length() - 1;
+			wordEnd = node.leftIndex - 1;
 			// check if wordEnd is out of index
 			if (wordEnd == text1.length() - 1) {
 				return;
