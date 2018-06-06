@@ -200,7 +200,7 @@ public class LCSubsequence {
 				c = b.charAt(wordStart);
 				if(c != ' ' && c != '\n') {
 					c = b.charAt(wordStart - 1);
-					while (c != ' ' && c != '\n') {
+					while (c != ' ' && c != '\n' && wordStart != 0) {
 						n.addChar(c);
 						wordStart--;
 						
@@ -219,7 +219,7 @@ public class LCSubsequence {
 				c = b.charAt(wordEnd);
 				if(c != ' ' && c != '\n') {
 					c = b.charAt(wordEnd + 1);
-					while (c != ' ' && c != '\n') {
+					while (c != ' ' && c != '\n' && wordEnd != b.length() - 1) {
 						n.context.append(c);
 						wordEnd++;
 						
@@ -228,6 +228,7 @@ public class LCSubsequence {
 				}
 				n.rightIndex = wordStart;
 			}
+			
 			
 			// if node is deleted 
 			if(n.flag == Node.DELETE) {
@@ -245,7 +246,7 @@ public class LCSubsequence {
 				c = a.charAt(wordStart);
 				if(c != ' ' && c != '\n') {
 					c = a.charAt(wordStart - 1);
-					while (c != ' ' && c != '\n') {
+					while (c != ' ' && c != '\n' && wordStart != 0) {
 						n.addChar(c);
 						wordStart--;
 						
@@ -264,7 +265,7 @@ public class LCSubsequence {
 				c = a.charAt(wordEnd);
 				if(c != ' ' && c != '\n') {
 					c = a.charAt(wordEnd + 1);
-					while (c != ' ' && c != '\n') {
+					while (c != ' ' && c != '\n' && wordEnd != a.length() - 1) {
 						n.context.append(c);
 						wordEnd++;
 						
@@ -275,6 +276,54 @@ public class LCSubsequence {
 				n.leftIndex = wordStart;
 			}
 		}
+		
+
+//		for(Map.Entry<Node, Node> entry : changedResult.entrySet()) {
+//			Node key = entry.getKey();
+//			Node value = entry.getValue();
+//			
+//			if(key.flag == Node.DUMMY) {
+//				// separate by words
+//				// scan front-side
+//				boolean isLeft = n.leftIndex != -1? true : false;
+//				wordStart = n.leftIndex != -1? key.leftIndex : key.rightIndex;
+//				// check if rightIndex is zero
+//				if (wordStart == 0) {
+//					continue;
+//				}
+//				
+//				c = b.charAt(wordStart);
+//				if(c != ' ' && c != '\n') {
+//					c = b.charAt(wordStart - 1);
+//					while (c != ' ' && c != '\n') {
+//						key.addChar(c);
+//						wordStart--;
+//						
+//						c = b.charAt(wordStart - 1);
+//					}	
+//				}
+//				
+//				// scan back-side
+//				wordEnd = wordStart + n.context.length() - 1;
+//				
+//				// check if wordEnd is out of index
+//				if (wordEnd == b.length() - 1) {
+//					continue;
+//				}
+//				
+//				c = b.charAt(wordEnd);
+//				if(c != ' ' && c != '\n') {
+//					c = b.charAt(wordEnd + 1);
+//					while (c != ' ' && c != '\n') {
+//						n.context.append(c);
+//						wordEnd++;
+//						
+//						c = b.charAt(wordEnd + 1);
+//					}
+//				}
+//				n.rightIndex = wordStart;
+//			}
+//		}
 		
 		
 //		// print out nodes that CHANGED
