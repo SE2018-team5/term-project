@@ -111,18 +111,10 @@ public class LCSubsequence {
 		}
 		
 		// print out node char by char 
-		for(Node n : result) {
-			System.out.println(n.toString());
-		}
+//		for(Node n : result) {
+//			System.out.println(n.toString());
+//		}
 		
-
-		// make node word by word
-		for(Node n : result) {
-			setNodeByWord(a, b, n);
-		}
-		
-//		changedResult = new HashMap<>();
-//		LinkedList<MatchNode> matchResult = new LinkedList();
 		LinkedList<Node> ret = new LinkedList();
 		
 		// find changed words
@@ -168,18 +160,29 @@ public class LCSubsequence {
 				} else {
 					ret.add(new Node(new StringBuffer(), -1, n1.rightIndex, Node.DUMMY));
 				}
-				
-				
-			}
-			
+			}			
 		}
+
+		// make node word by word
+		for(Node n : ret) {
+			setNodeByWord(a, b, n);
+		}
+		// make node word by word
+		for(Node n : ret) {
+			setDummyNodeByWord(a, b, n);
+		}
+		
+		// print out node char by char 
+		for(Node n : result) {
+			System.out.println(n.toString());
+		}
+		
+//		changedResult = new HashMap<>();
+//		LinkedList<MatchNode> matchResult = new LinkedList();
 		
 		System.out.print("A\n");
 		
-		// make node word by word
-//		for(Node n : ret) {
-//			setDummyNodeByWord(a, b, n);
-//		}
+		
 		
 		for (Node n : ret) {
 			System.out.println(n);
@@ -205,7 +208,7 @@ public class LCSubsequence {
 				return;
 			}
 			c = text2.charAt(wordStart);
-			if(c != ' ' && c != '\n' && wordStart != 0) {
+			if(c != ' ' && c != '\n' && c != '\t' && wordStart != 0) {
 				c = text2.charAt(wordStart - 1);
 				while (c != ' ' && c != '\n' && wordStart != 0) {
 					node.addChar(c);
@@ -228,9 +231,9 @@ public class LCSubsequence {
 			}
 			
 			c = text2.charAt(wordEnd);
-			if(c != ' ' && c != '\n') {
+			if(c != ' ' && c != '\n' && c != '\t' ) {
 				c = text2.charAt(wordEnd + 1);
-				while (c != ' ' && c != '\n' && wordEnd != text2.length() - 1) {
+				while (c != ' ' && c != '\n'  && c != '\t' && wordEnd != text2.length() - 1) {
 					node.context.append(c);
 					wordEnd++;
 					
@@ -258,7 +261,7 @@ public class LCSubsequence {
 			}
 			
 			c = text1.charAt(wordStart);
-			if(c != ' ' && c != '\n' && wordStart != 0) {
+			if(c != ' ' && c != '\n' && c != '\t' && wordStart != 0) {
 				c = text1.charAt(wordStart - 1);
 				while (c != ' ' && c != '\n') {
 					node.addChar(c);
@@ -281,9 +284,9 @@ public class LCSubsequence {
 			}
 			
 			c = text1.charAt(wordEnd);
-			if(c != ' ' && c != '\n') {
+			if(c != ' ' && c != '\n' && c != '\t' ) {
 				c = text1.charAt(wordEnd + 1);
-				while (c != ' ' && c != '\n' && wordEnd != text1.length() - 1) {
+				while (c != ' ' && c != '\n'  && c != '\t' && wordEnd != text1.length() - 1) {
 					node.context.append(c);
 					wordEnd++;
 					
@@ -313,29 +316,31 @@ public class LCSubsequence {
 			// scan front-side
 			wordStart = node.rightIndex;
 			// check if rightIndex is zero
-			if (wordStart < 0 || wordStart == text2.length()) {
+			if (wordStart <= 0 || wordStart == text2.length()) {
 				return;
 			}
 			
+			// dummy on start
 			c1 = text2.charAt(wordStart);
+			if(c1 == ' ' || c1 == '\n' || c1 == '\t')
+				return;
 			
-//			if(c1 != ' ' && c1 != '\n') {
-//				c1 = text2.charAt(wordStart - 1);
-//				while (c1 != ' ' && c1 != '\n' && wordStart != 0) {
-//					node.addChar(c1);
-//					wordStart--;
-//
-//					if(wordStart == 0) {
-//						break;
-//					} else {
-//						c1 = text2.charAt(wordStart - 1);
-//					}
-//				}	
-//			}
-			if(wordStart == 0) {
-				node.addChar(c1);
+			c1 = text2.charAt(wordStart - 1);
+			if(c1 != ' ' && c1 != '\n' && c1 != '\t') {
+				c1 = text2.charAt(wordStart - 1);
+				while (c1 != ' ' && c1 != '\n') {
+					node.addChar(c1);
+					wordStart--;
+
+					if(wordStart == 0) {
+						break;
+					} else {
+						c1 = text2.charAt(wordStart - 1);
+					}
+				}	
+			} else {
+				return;
 			}
-			
 						
 			// scan back-side
 			wordEnd = node.rightIndex;
@@ -345,7 +350,6 @@ public class LCSubsequence {
 				return;
 			}
 			
-			c1 = text2.charAt(wordEnd);
 			c1 = text2.charAt(wordEnd + 1);
 			while (c1 != ' ' && c1 != '\n' && wordEnd < text2.length()) {
 				node.context.append(c1);
@@ -369,30 +373,32 @@ public class LCSubsequence {
 			wordStart = node.leftIndex;
 			
 			// check if leftIndex is zero
-			if (wordStart < 0 || wordStart == text2.length()) {
+			if (wordStart <= 0 || wordStart == text2.length()) {
 				return;
 			}
 			
 			c1 = text1.charAt(wordStart);
-			node.addChar(c1);
-//			if(c1 != ' ' && c1 != '\n') {
-//				c1 = text1.charAt(wordStart - 1);
-//				while (c1 != ' ' && c1 != '\n') {
-//					node.addChar(c1);
-//					wordStart--;
-//					
-//					if(wordStart == 0) {
-//						break;
-//					} else {
-//						c1 = text1.charAt(wordStart - 1);
-//					}
-//						
-//				}	
-//			}
+			if(c1 == ' ' || c1 == '\n' || c1 == '\t')
+				return;
 			
-//			if(wordStart == 0) {
-//				node.addChar(c1);
-//			}
+			// dummy on start
+			c1 = text1.charAt(wordStart - 1);
+			if(c1 != ' ' && c1 != '\n' && c1 != '\t') {
+				c1 = text1.charAt(wordStart - 1);
+				while (c1 != ' ' && c1 != '\n') {
+					node.addChar(c1);
+					wordStart--;
+					
+					if(wordStart == 0) {
+						break;
+					} else {
+						c1 = text1.charAt(wordStart - 1);
+					}
+						
+				}	
+			} else {
+				return;
+			}
 			
 			// scan back-side
 			wordEnd = node.leftIndex;
@@ -402,41 +408,18 @@ public class LCSubsequence {
 			}
 			
 			c1 = text1.charAt(wordEnd);
-			if(c1 != ' ' && c1 != '\n') {
-				c1 = text1.charAt(wordEnd + 1);
-				while (c1 != ' ' && c1 != '\n' && wordEnd < text1.length()) {
-					node.context.append(c1);
-					wordEnd++;
-					
-					if(wordEnd == text1.length()) {
-						break;
-					} else {
-						c1 = text1.charAt(wordEnd + 1);
-					}
+			while (c1 != ' ' && c1 != '\n' && wordEnd < text1.length()) {
+				node.context.append(c1);
+				wordEnd++;
+				
+				if(wordEnd == text1.length()) {
+					break;
+				} else {
+					c1 = text1.charAt(wordEnd + 1);
 				}
 			}
 			
 			node.leftIndex = wordStart;
 		}
-
-				
-//		Node key = entry.getKey();		// right
-//		Node value = entry.getValue();	// left
-//		
-//		Node node = null;
-//		if(key.flag == Node.DUMMY) {
-//			// left index is -1
-//			node = key;
-//		} else if (value.flag == Node.DUMMY) {
-//			// right index is -1
-//			node = value;
-//		}
-//		
-//		if(node == null)
-//			return;
-//		
-//		assert node.flag == Node.DUMMY;
-//		
-			}
-	
+	}
 }
