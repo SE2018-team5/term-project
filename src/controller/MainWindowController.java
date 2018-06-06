@@ -12,6 +12,7 @@ import javax.swing.text.BadLocationException;
 import model.EditPanelModel;
 import model.MainWindowModel;
 import model.Node;
+import model.StringBufferModel;
 import view.MainWindowView;
 
 public class MainWindowController {
@@ -21,7 +22,8 @@ public class MainWindowController {
 
 	EditPanelController leftController;
 	EditPanelController rightController;
-
+	StringBufferModel leftBuffer;
+	StringBufferModel rightBuffer;
 	/**
 	 * Launch the application.
 	 */
@@ -57,12 +59,16 @@ public class MainWindowController {
 		this.view.getMergePanel().addCmpActionListener(new CmpActionListener());
 		this.view.getMergePanel().addCopyToLeftActionListener(new CopyToLeftActionListener());
 		this.view.getMergePanel().addCopyToRightActionListener(new CopyToRightActionListener());
+		
+		leftBuffer = new StringBufferModel(leftController.getEditPanel().getContent());
+		rightBuffer = new StringBufferModel(rightController.getEditPanel().getContent());
+		//Set Left/Right StringBuffer
 	}
 
 	class CmpActionListener implements ActionListener {
 
 		javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter = new javax.swing.text.DefaultHighlighter.DefaultHighlightPainter(
-				Color.YELLOW);
+				Color.RED);
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -70,9 +76,22 @@ public class MainWindowController {
 			LCSubsequence l = new LCSubsequence();
 			LinkedList<Node> r = LCSubsequence.getDiff(leftController.model.getSB().toString(), rightController.model.getSB().toString());
 
+			
+//			leftController.setStringBuffer(leftController.getEditPanel().getContent());
+//			rightController.setStringBuffer(rightController.getEditPanel().getContent());
+			
+			leftBuffer.setStringBuffer(leftController.getEditPanel().getContent());
+			rightBuffer.setStringBuffer(rightController.getEditPanel().getContent());
+			
+			LinkedList<Node> r = LCSubsequence.getDiff(leftBuffer.getStringBuffer().toString(),rightBuffer.getStringBuffer().toString());
+			
+			
+			System.out.println(leftBuffer.getStringBuffer().toString());
+			System.out.println(rightBuffer.getStringBuffer().toString());
+			
 			for (Node e1 : r) {
 				if (e1.flag == Node.DELETE) {
-					System.out.println("Delete\n");
+					System.out.println("DELETE\n");
 					try {
 						leftController.getEditPanel().getEditorPane().getHighlighter().
 								addHighlight(e1.leftIndex, e1.leftIndex + e1.context.length(), highlightPainter);

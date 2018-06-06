@@ -2,9 +2,11 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -20,6 +22,12 @@ public class EditPanelController {
 	EditPanelModel model;
 	MainWindowController mainController;
 	private EditPanel editPanel;
+	public StringBuffer text;
+	
+	FileReader fr;
+	BufferedReader br = null;
+	
+	EditPanelController(EditPanel e, MainWindowModel m){
 	
 	EditPanelController(EditPanel e, MainWindowController m, EditPanelModel em){
 		this.editPanel = e;
@@ -37,20 +45,23 @@ public class EditPanelController {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			int result = editPanel.getFileDlg().showOpenDialog(null);
-			if (result == JFileChooser.APPROVE_OPTION) // 파일을 선택하고 열었을때 이벤트
+			String line;
+			if (result == JFileChooser.APPROVE_OPTION) // ������ �����ϰ� �������� �̺�Ʈ
 			{
 				try {
 					File file = editPanel.getFileDlg().getSelectedFile();
-					editPanel.getFilePathTextField().setText(file.getPath());
-					Scanner scan = new Scanner(file);
-					StringBuffer sb = new StringBuffer();
-					while (scan.hasNextLine()) {
-						sb.append(scan.nextLine() + "\n");
+					String str = "";
+					fr = new FileReader(file);
+					br = new BufferedReader(fr);
+					while((line = br.readLine()) != null){
+						str += line + "\n";
 					}
-					editPanel.setContent(sb.toString() + "\n");
-					editPanel.setEditorPaneNotEditable(); // 수정 불가
-					model.setSB(sb);
-					editPanel.setContent(model.getSB().toString());
+
+					
+					editPanel.getFilePathTextField().setText(file.getPath());
+					editPanel.setContent(str);
+					editPanel.setEditorPaneNotEditable(); // ���� �Ұ�
+					text = new StringBuffer(str);
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
 					
@@ -113,6 +124,10 @@ public class EditPanelController {
 	public EditPanel getEditPanel() {
 		// TODO Auto-generated method stub
 		return this.editPanel;
+	}
+	public void setStringBuffer(String s) {
+		text.delete(0, text.length());
+		text.append(s);
 	}
 	
 	public EditPanelModel getEditPanelModel() {
