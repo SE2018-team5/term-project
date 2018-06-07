@@ -8,7 +8,16 @@ public class LCSubsequence {
 	public static LinkedList<Node> result;
 	public static LinkedList<Node> getDiff(String a, String b) {
 		result = new LinkedList<Node>();
-		result.push(new Node(new StringBuffer(), 0, 0, Node.DUMMY));
+		
+		// check if texts empty
+		if(a.isEmpty() || b.isEmpty()) {
+			return result;
+		}
+		
+		// push dummy node
+		result.push(new Node(new StringBuffer(), -1, -1, Node.DUMMY));
+		
+		
 		
 		int[][] lengths = new int[a.length() + 1][b.length() + 1];
 		// row 0 and column 0 are initialized to 0 already
@@ -249,13 +258,13 @@ public class LCSubsequence {
         }
         
         c = text.charAt(wordEnd);
-        if(c != ' ' && c != '\n' && c != '\t' ) {
+        if(c != ' ' && c != '\n' && c != '\t' && wordEnd != text.length() - 1 ) {
             c = text.charAt(wordEnd + 1);
-            while (c != ' ' && c != '\n'  && c != '\t' && wordEnd != text.length() - 1) {
+            while (c != ' ' && c != '\n'  && c != '\t') {
                 node.context.append(c);
                 wordEnd++;
                 
-                if(wordEnd == text.length()) {
+                if(wordEnd == text.length() - 1) {
                     break;
                 } else {
                     c = text.charAt(wordEnd + 1);
