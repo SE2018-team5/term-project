@@ -70,6 +70,7 @@ public class EditPanelController {
 					
 					model.loaded();
 					mainController.isBothLoaded();
+					model.setSB(editPanel.getContent());
 					br.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -84,10 +85,11 @@ public class EditPanelController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			File file = editPanel.getFileDlg().getSelectedFile();
-
+int result = editPanel.getFileDlg().showSaveDialog(null);
+			
+			if (result == JFileChooser.APPROVE_OPTION) {
 			try {
+				File file = editPanel.getFileDlg().getSelectedFile();
 				if (!file.exists()) {
 					file.createNewFile();
 				}
