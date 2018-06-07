@@ -89,24 +89,25 @@ public class EditPanelController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-int result = editPanel.getFileDlg().showSaveDialog(null);
+			int result = editPanel.getFileDlg().showSaveDialog(null);
 			
 			if (result == JFileChooser.APPROVE_OPTION) {
-			try {
-				File file = editPanel.getFileDlg().getSelectedFile();
-				if (!file.exists()) {
-					file.createNewFile();
+				try {
+					File file = editPanel.getFileDlg().getSelectedFile();
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+	
+					FileWriter fw = new FileWriter(file, false);
+					BufferedWriter bw = new BufferedWriter(fw);
+	
+					bw.write(model.getSB().toString());
+					bw.close();
+	
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-
-				FileWriter fw = new FileWriter(file, false);
-				BufferedWriter bw = new BufferedWriter(fw);
-
-				bw.write(model.getSB().toString());
-				bw.close();
-
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
 		}
 		
@@ -126,6 +127,27 @@ int result = editPanel.getFileDlg().showSaveDialog(null);
 				editPanel.setEditorPaneEditable();
 				editPanel.getBtnEdit().setText("Editing...");
 				model.setIsModified(true);
+				
+				// remove highlights 
+				mainController.leftController.getEditPanel().getEditorPane().getHighlighter().removeAllHighlights();
+				mainController.rightController.getEditPanel().getEditorPane().getHighlighter().removeAllHighlights();
+				
+				// remove highlight list
+				mainController.highlighterLeftList.clear();
+				mainController.highlighterRightList.clear();
+				
+				// remove node list 
+				mainController.model.getResultList().clear();
+				mainController.model.getLeftList().clear();
+				mainController.model.getRightList().clear();
+				
+				// set node number zero
+				mainController.model.setNodeNumZero();
+				
+				// set copy up down buttons disable
+				mainController.view.getMergePanel().setBtnsCopyUpDownDisable();
+				
+				
 			}
 		}
 		

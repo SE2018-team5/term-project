@@ -22,15 +22,18 @@ public class MainWindowController {
     MainWindowView  view;
     MainWindowModel model;
 
-    EditPanelController                                         leftController;
-    EditPanelController                                         rightController;
-    EditPanelModel                                              leftModel;
-    EditPanelModel                                              rightModel;
+    EditPanelController	leftController;
+    EditPanelController	rightController;
+    EditPanelModel		leftModel;
+    EditPanelModel		rightModel;
+    
+    ArrayList<Object>	highlighterLeftList;
+    ArrayList<Object>	highlighterRightList;
+    
     javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainter;
     javax.swing.text.DefaultHighlighter.DefaultHighlightPainter highlightPainterGreen;
-    ArrayList<Object>                                           highlighterLeftList;
-    ArrayList<Object>                                           highlighterRightList;
-
+    
+    
     /**
      * Launch the application.
      */
@@ -310,7 +313,7 @@ public class MainWindowController {
 				|| (!leftController.getEditPanelModel().getIsLoaded() && !rightController.getEditPanelModel().getIsLoaded())) {
 			this.view.getMergePanel().setBtnCmpEnable();
 		} else {
-			this.view.getMergePanel().setBtnsUnEnable();
+			this.view.getMergePanel().setBtnsDisable();
 		}
 	}
     

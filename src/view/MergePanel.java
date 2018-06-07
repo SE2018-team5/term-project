@@ -55,17 +55,40 @@ public class MergePanel extends JPanel{
 		btnDown.setEnabled(false);
 	}
 	
+	// setBtnCmpEnable
 	public void setBtnCmpEnable() {
 		this.btnCmp.setEnabled(true);
 	}
 	
-	public void setBtnsEnable() {
+	public void setBtnCmpDisable() {
+		this.btnCmp.setEnabled(false);
+	}
+	
+	// setBtnsEnable
+	public void setBtnsCopyUpDownEnable() {
 		this.btnCpy2Left.setEnabled(true);
 		this.btnCpy2Right.setEnabled(true);
 		btnUp.setEnabled(true);
 		btnDown.setEnabled(true);
 	}
-	public void setBtnsUnEnable() {
+	
+	public void setBtnsCopyUpDownDisable() {
+		this.btnCpy2Left.setEnabled(false);
+		this.btnCpy2Right.setEnabled(false);
+		btnUp.setEnabled(false);
+		btnDown.setEnabled(false);
+	}
+	
+	public void setBtnsEnable() {
+		this.btnCmp.setEnabled(true);
+		this.btnCpy2Left.setEnabled(true);
+		this.btnCpy2Right.setEnabled(true);
+		btnUp.setEnabled(true);
+		btnDown.setEnabled(true);
+	}
+	
+	// setBtnsUnEnable
+	public void setBtnsDisable() {
 		this.btnCmp.setEnabled(false);
 		this.btnCpy2Left.setEnabled(false);
 		this.btnCpy2Right.setEnabled(false);
