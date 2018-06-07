@@ -86,6 +86,12 @@ public class LCSubsequence {
 			}
 		}
 		
+		for (Node n1 : result) {
+			System.out.println(n1);
+		}
+		
+		System.out.println("before word");
+		
 		LinkedList<Node> ret = new LinkedList();
 		
 		// find changed words
@@ -202,12 +208,14 @@ public class LCSubsequence {
         }
         c = text.charAt(wordStart);
         if(c != ' ' && c != '\n' && c != '\t' && wordStart != 0) {
-            c = text.charAt(wordStart - 1);
-            while (c != ' ' && c != '\n' && wordStart != 0) {
+        	wordStart--;
+            c = text.charAt(wordStart);
+            while (c != ' ' && c != '\n' && wordStart >= 0) {
                 node.addChar(c);
                 wordStart--;
 
-                if(wordStart == 0) {
+                if(wordStart == -1) {
+                	wordStart = 0;
                     break;
                 } else {
                     c = text.charAt(wordStart);
@@ -219,7 +227,14 @@ public class LCSubsequence {
         wordEnd = wordStart + node.context.length() - 1;
         
         // check if wordEnd is out of index
-        if (wordEnd == text.length() - 1) {
+        if (wordEnd == text.length()) {
+        	// set new index
+    		if(node.leftIndex == -1) {
+                node.rightIndex = wordStart;
+            }
+            if(node.rightIndex == -1) {
+                node.leftIndex = wordStart;
+            }
             return;
         }
         
@@ -233,7 +248,7 @@ public class LCSubsequence {
                 if(wordEnd + 1 == text.length()) {
                     break;
                 } else {
-                    c = text.charAt(wordEnd);
+                    c = text.charAt(wordEnd + 1);
                 }
             }
         }
@@ -283,11 +298,14 @@ public class LCSubsequence {
 		
 		c1 = text.charAt(wordStart - 1);
 		if(c1 != ' ' && c1 != '\n' && c1 != '\t') {
+			wordStart--;
+            c1 = text.charAt(wordStart);
 			while (c1 != ' ' && c1 != '\n' && c1 != '\t' && wordStart >= 0 ) {
 				node.addChar(c1);
 				wordStart--;
 
 				if(wordStart == -1) {
+					wordStart = 0;
 					break;
 				} else {
 					c1 = text.charAt(wordStart);
@@ -299,7 +317,14 @@ public class LCSubsequence {
 					
 		// scan back-side
 		// check if wordEnd is out of index
-		if (wordEnd == text.length() - 1) {
+		if (wordEnd == text.length()) {
+			// set new index
+			if(node.leftIndex == -1) {
+	            node.rightIndex = wordStart;
+	        }
+	        if(node.rightIndex == -1) {
+	            node.leftIndex = wordStart;
+	        }
 			return;
 		}
 		
