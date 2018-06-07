@@ -46,8 +46,10 @@ public class EditPanelController {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			int result = editPanel.getFileDlg().showOpenDialog(null);
+
 			String line;
 			
+
 
 			if (result == JFileChooser.APPROVE_OPTION) // 파일을 선택하고 열었을때 이벤트
 			{
@@ -60,11 +62,13 @@ public class EditPanelController {
 						str += line + "\n";
 					}
 
+
 					
 					editPanel.getFilePathTextField().setText(file.getPath());
 					editPanel.setContent(str);
 					editPanel.setEditorPaneNotEditable(); // 수정 불가
 					text = new StringBuffer(str);
+
 					editPanel.getBtnSaveAs().setEnabled(true);
 					editPanel.getBtnEdit().setEnabled(true);
 					

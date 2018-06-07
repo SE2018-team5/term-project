@@ -11,6 +11,7 @@ public class EditPanelModel {
 			this.isLoaded = false;
 		else
 			this.isLoaded = true;
+
 	}
 	
 	public Boolean getIsLoaded() {
