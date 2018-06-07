@@ -90,8 +90,8 @@ public class EditPanel extends JPanel{
 	EditPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fileDlg = new JFileChooser();
-		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt íŒŒì¼ë§Œ ë³´ì´ê²Œ
-		fileDlg.setMultiSelectionEnabled(false);//ë‹¤ì¤‘ ì„ íƒ ë¶ˆê°€
+		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt ÆÄÀÏ¸¸ º¸ÀÌ°Ô
+		fileDlg.setMultiSelectionEnabled(false);//´ÙÁß ¼±ÅÃ ºÒ°¡
 		fileDlg.setCurrentDirectory(new File(System.getProperty("user.dir") + "//" + "data"));
 
 		// three button panel

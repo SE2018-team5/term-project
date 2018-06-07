@@ -70,9 +70,9 @@ public class MainWindowController {
     }
 
     /**
-     * Compare 버튼 눌렸을 때 처리하는 ActionListener 1. 빨간색 하이라이터 준비 2. 양쪽 editPanelModel의
-     * StringBuffer에 내용 대입 3. 문장 분석 후 resultList에 노드리스트 대입 4. 왼쪽의 노드와 오른쪽의 노드가 1대1로
-     * 대응되도록 노드리스트 분리 5.
+     * Compare 踰꾪듉 �닃�졇�쓣 �븣 泥섎━�븯�뒗 ActionListener 1. 鍮④컙�깋 �븯�씠�씪�씠�꽣 以�鍮� 2. �뼇履� editPanelModel�쓽
+     * StringBuffer�뿉 �궡�슜 ���엯 3. 臾몄옣 遺꾩꽍 �썑 resultList�뿉 �끂�뱶由ъ뒪�듃 ���엯 4. �쇊履쎌쓽 �끂�뱶�� �삤瑜몄そ�쓽 �끂�뱶媛� 1��1濡�
+     * ���쓳�릺�룄濡� �끂�뱶由ъ뒪�듃 遺꾨━ 5.
      */
     class CmpActionListener implements ActionListener {
 
@@ -97,8 +97,8 @@ public class MainWindowController {
             if (answer == JOptionPane.OK_OPTION) {
                 // need to listen up&down button action
 
-                // 1. UP/DOWN 이 가리키는 NODE의 번호
-                int idx      = model.getNodeNum();// 몇 번째 노드인지 UP/DOWN이 가리키는 nodeNum 대입
+                // 1. UP/DOWN �씠 媛�由ы궎�뒗 NODE�쓽 踰덊샇
+                int idx      = model.getNodeNum();// 紐� 踰덉㎏ �끂�뱶�씤吏� UP/DOWN�씠 媛�由ы궎�뒗 nodeNum ���엯
                 int leftidx  = model.getLeftList().get(idx).leftIndex;
                 int rightidx = model.getRightList().get(idx).rightIndex;
 
@@ -107,27 +107,27 @@ public class MainWindowController {
 
                 String head = null, mid = null, tail = null;
 
-                // 2. 0부터 leftinx 까지 string
+                // 2. 0遺��꽣 leftinx 源뚯� string
 
                 head = leftModel.getSB().toString().substring(0, leftidx);
-                // 오른쪽 패널 (flag가 ADD인 노드들)에서 해당 idx의 context
+                // �삤瑜몄そ �뙣�꼸 (flag媛� ADD�씤 �끂�뱶�뱾)�뿉�꽌 �빐�떦 idx�쓽 context
                 mid = model.getRightList().get(idx).context.toString();
 
-                // 왼쪽 패널 (flag가 DELETE인 노드들)에서 해당 idx의 rightindex부터 file의 끝까지.
+                // �쇊履� �뙣�꼸 (flag媛� DELETE�씤 �끂�뱶�뱾)�뿉�꽌 �빐�떦 idx�쓽 rightindex遺��꽣 file�쓽 �걹源뚯�.
                 tail = leftModel.getSB().toString().substring(leftidx + leftNode.context.length());
 
-                // leftpanel의 전체 string update.
+                // leftpanel�쓽 �쟾泥� string update.
                 head = head.concat(mid);
                 head = head.concat(tail);
                 
                 leftModel.setSB(head);
                 model.setIsCompared(false);
                 
-                // 사용자가 merge 하면 string 을 왼쪽 model의 stringbuffer에 넣음, modified 를 true로 설정,
-                // updateEditpanel 호출.
+                // �궗�슜�옄媛� merge �븯硫� string �쓣 �쇊履� model�쓽 stringbuffer�뿉 �꽔�쓬, modified 瑜� true濡� �꽕�젙,
+                // updateEditpanel �샇異�.
                 leftModel.setIsModified(true);
                 leftController.updateEditPanel();
-                // 해당 줄의 하이라이트 지움(compare 다시하면 해결가능)
+                // �빐�떦 以꾩쓽 �븯�씠�씪�씠�듃 吏���(compare �떎�떆�븯硫� �빐寃곌��뒫)
                 compareAction();
             }
         }
@@ -145,8 +145,8 @@ public class MainWindowController {
             if (answer == JOptionPane.OK_OPTION) {
                 // need to listen up&down button action
 
-                // 1. UP/DOWN 이 가리키는 NODE의 번호
-                int idx      = model.getNodeNum();// 몇 번째 노드인지 UP/DOWN이 가리키는 nodeNum 대입
+                // 1. UP/DOWN �씠 媛�由ы궎�뒗 NODE�쓽 踰덊샇
+                int idx      = model.getNodeNum();// 紐� 踰덉㎏ �끂�뱶�씤吏� UP/DOWN�씠 媛�由ы궎�뒗 nodeNum ���엯
                 int leftidx  = model.getLeftList().get(idx).leftIndex;
                 int rightidx = model.getRightList().get(idx).rightIndex;
 
@@ -155,28 +155,28 @@ public class MainWindowController {
 
                 String head = null, mid = null, tail = null;
 
-                // 2. 0부터 rightidx 까지 string
+                // 2. 0遺��꽣 rightidx 源뚯� string
 
                 head = rightModel.getSB().toString().substring(0, rightidx);
-                // 왼쪽 패널 (flag가 ADD인 노드들)에서 해당 idx의 context
+                // �쇊履� �뙣�꼸 (flag媛� ADD�씤 �끂�뱶�뱾)�뿉�꽌 �빐�떦 idx�쓽 context
                 mid = model.getLeftList().get(idx).context.toString();
 
-                // 오른쪽 패널 (flag가 DELETE인 노드들)에서 해당 idx의 rightindex부터 file의 끝까지.
+                // �삤瑜몄そ �뙣�꼸 (flag媛� DELETE�씤 �끂�뱶�뱾)�뿉�꽌 �빐�떦 idx�쓽 rightindex遺��꽣 file�쓽 �걹源뚯�.
                 tail = rightModel.getSB().toString().substring(rightidx + rightNode.context.length());
 
-                // rightpanel의 전체 string update.
+                // rightpanel�쓽 �쟾泥� string update.
                 head = head.concat(mid);
                 head = head.concat(tail);
                 
                 rightModel.setSB(head);
                 model.setIsCompared(false);
                 
-                // 사용자가 merge 하면 string 을 왼쪽 model의 stringbuffer에 넣음, modified 를 true로 설정,
-                // updateEditpanel 호출.
+                // �궗�슜�옄媛� merge �븯硫� string �쓣 �쇊履� model�쓽 stringbuffer�뿉 �꽔�쓬, modified 瑜� true濡� �꽕�젙,
+                // updateEditpanel �샇異�.
                 rightModel.setIsModified(true);
                 rightController.updateEditPanel();
                 
-                // 해당 줄의 하이라이트 지움(compare 다시하면 해결가능)
+                // �빐�떦 以꾩쓽 �븯�씠�씪�씠�듃 吏���(compare �떎�떆�븯硫� �빐寃곌��뒫)
                 compareAction();
             }
         }
@@ -306,10 +306,13 @@ public class MainWindowController {
     }
 
     public void isBothLoaded() {
-        if (leftController.getEditPanelModel().getIsLoaded() && rightController.getEditPanelModel().getIsLoaded()) {
-            this.view.getMergePanel().setBtnsEnable();
-        }
-    }
+		if((leftController.getEditPanelModel().getIsLoaded() && rightController.getEditPanelModel().getIsLoaded())
+				|| (!leftController.getEditPanelModel().getIsLoaded() && !rightController.getEditPanelModel().getIsLoaded())) {
+			this.view.getMergePanel().setBtnCmpEnable();
+		} else {
+			this.view.getMergePanel().setBtnsUnEnable();
+		}
+	}
     
     public void compareAction() {
         
@@ -423,5 +426,6 @@ public class MainWindowController {
         
         model.setIsCompared(true);
         model.setIsHighlighted(true);
+        view.getMergePanel().setBtnsEnable();
     }
 }
