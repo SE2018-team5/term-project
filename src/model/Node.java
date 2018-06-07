@@ -57,6 +57,7 @@ public class Node {
     @Override
     public boolean equals(Object o) {
     	Node node = null;
+    	
     	if(o instanceof Node) {
     		node = (Node) o;
     	} else {
@@ -64,25 +65,23 @@ public class Node {
     	}
     	
     	if(this.flag == Node.ADD && this.rightIndex == node.rightIndex) {
-			return this.context.equals(node.context);
+			return this.context.toString().equals(node.context.toString());
     	}
     	
     	if(this.flag == Node.DELETE && this.leftIndex == node.leftIndex) {
-			return this.context.equals(node.context);
+			return this.context.toString().equals(node.context.toString());
     	}
     	
     	if(this.flag == Node.DUMMY && this.leftIndex == node.leftIndex && this.leftIndex != -1) {
-			return this.context.equals(node.context);
+			return this.context.toString().equals(node.context.toString());
     	}
     	
     	if(this.flag == Node.DUMMY && this.rightIndex == node.rightIndex && this.rightIndex != -1) {
-			return this.context.equals(node.context);
+			return this.context.toString().equals(node.context.toString());
     	}
     	
     	return false;
-    	
     }
-    
 }
 
 

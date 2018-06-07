@@ -92,12 +92,19 @@ public class LCSubsequence {
 		
 		System.out.println("before word");
 		
+		// make node word by word
+		for(Node n : result) {
+			setNodeByWord(a, b, n);
+		}
+		
 		LinkedList<Node> ret = new LinkedList();
 		
 		// find changed words
 		for(Node n1 : result) {
 			if (n1.flag == Node.ADD) {
 				Node left = null;
+				
+				System.out.println("" + ret.indexOf(n1));
 				if(ret.contains(n1))
 					continue;
 				else 
@@ -117,7 +124,11 @@ public class LCSubsequence {
 					ret.add(left);
 				} else {
 					// need dummy node
-					ret.add(new Node(new StringBuffer(), n1.leftIndex, -1, Node.DUMMY));
+					Node dummy = new Node(new StringBuffer(), n1.leftIndex, -1, Node.DUMMY);
+					
+					setDummyNodeByWord(a, b, dummy);
+					
+					ret.add(dummy);
 				}
 				
 			}
@@ -143,20 +154,21 @@ public class LCSubsequence {
 				if(right != null) {
 					ret.add(right);
 				} else {
-					ret.add(new Node(new StringBuffer(), -1, n1.rightIndex, Node.DUMMY));
+					Node dummy = new Node(new StringBuffer(), -1, n1.rightIndex, Node.DUMMY);
+					
+					setDummyNodeByWord(a, b, dummy);
+					
+					ret.add(dummy);
 				}
 			}			
 		}
 
-		// make node word by word
-		for(Node n : ret) {
-			setNodeByWord(a, b, n);
-		}
-		
-		// make node word by word
-		for(Node n : ret) {
-			setDummyNodeByWord(a, b, n);
-		}
+//		
+//		
+//		// make node word by word
+//		for(Node n : ret) {
+//			setDummyNodeByWord(a, b, n);
+//		}
 		
 		// print out node char by char 
 		for(Node n : result) {
@@ -208,17 +220,15 @@ public class LCSubsequence {
         }
         c = text.charAt(wordStart);
         if(c != ' ' && c != '\n' && c != '\t' && wordStart != 0) {
-        	wordStart--;
-            c = text.charAt(wordStart);
+            c = text.charAt(wordStart - 1);
             while (c != ' ' && c != '\n' && wordStart >= 0) {
                 node.addChar(c);
                 wordStart--;
 
-                if(wordStart == -1) {
-                	wordStart = 0;
+                if(wordStart == 0) {
                     break;
                 } else {
-                    c = text.charAt(wordStart);
+                    c = text.charAt(wordStart - 1);
                 }
             }   
         }
@@ -245,7 +255,7 @@ public class LCSubsequence {
                 node.context.append(c);
                 wordEnd++;
                 
-                if(wordEnd + 1 == text.length()) {
+                if(wordEnd == text.length()) {
                     break;
                 } else {
                     c = text.charAt(wordEnd + 1);
@@ -298,17 +308,14 @@ public class LCSubsequence {
 		
 		c1 = text.charAt(wordStart - 1);
 		if(c1 != ' ' && c1 != '\n' && c1 != '\t') {
-			wordStart--;
-            c1 = text.charAt(wordStart);
 			while (c1 != ' ' && c1 != '\n' && c1 != '\t' && wordStart >= 0 ) {
 				node.addChar(c1);
 				wordStart--;
 
-				if(wordStart == -1) {
-					wordStart = 0;
+				if(wordStart == 0) {
 					break;
 				} else {
-					c1 = text.charAt(wordStart);
+					c1 = text.charAt(wordStart - 1);
 				}
 			}	
 		} else {
