@@ -22,6 +22,8 @@ class testLCSubsequence {
 	Node answer2;
 	Node answer3;
 	Node answer4;
+	Node answer5;
+	Node answer6;
 	@BeforeEach
 	void setUp() throws Exception {
 		text1 = new String("abcd\n" + 
@@ -42,7 +44,9 @@ class testLCSubsequence {
 		answer1 = new Node("abcd", 2); // DELETE = 2
 		answer2 = new Node("abdd", 1); // ADD = 1
 		answer3 = new Node("c\n\n", 2);
-		answer4 = new Node(" ", 2);
+		answer4 = new Node("", 2);
+		answer5 = new Node(" ", 1);
+		answer6 = new Node("dabcdefg", 1);
 		
 		test = LCSubsequence.getDiff(text1, text2);
 		
@@ -56,6 +60,8 @@ class testLCSubsequence {
 		assertEquals(answer2.context.toString(), test.poll().context.toString());
 		assertEquals(answer3.context.toString(), test.poll().context.toString());
 		assertEquals(answer4.context.toString(), test.poll().context.toString());
+		assertEquals(answer5.context.toString(), test.poll().context.toString());
+		assertEquals(answer6.context.toString(), test.poll().context.toString());
 	}
 
 }
