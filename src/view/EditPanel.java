@@ -6,6 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentListener;
+import java.io.File;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -53,6 +56,10 @@ public class EditPanel extends JPanel{
 	public void setContent(String s) {
 		this.editorPane.setText(s);
 	}
+	public void getContent(String s) {
+		this.editorPane.getText();
+	}
+	
 	public JButton getBtnLoad() {
 		return this.btnLoad;
 	}
@@ -76,11 +83,16 @@ public class EditPanel extends JPanel{
 	public Boolean isEditable() {
 		return this.editorPane.isEditable();
 	}
+	public void setScrollBar(int index) {
+		this.scrollPane.getVerticalScrollBar().setValue(index);
+	}
 
 	EditPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fileDlg = new JFileChooser();
 		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt 파일만 보이게
+		fileDlg.setMultiSelectionEnabled(false);//다중 선택 불가
+		fileDlg.setCurrentDirectory(new File(System.getProperty("user.dir") + "//" + "data"));
 
 		// three button panel
 		buttonPanel = new JPanel();
@@ -143,6 +155,6 @@ public class EditPanel extends JPanel{
 	public void addEditActionListener(ActionListener listenerForEditAction) {
 		btnEdit.addActionListener(listenerForEditAction);
 	}
-
+	
 
 }

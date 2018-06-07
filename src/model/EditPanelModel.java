@@ -7,7 +7,11 @@ public class EditPanelModel {
 	private StringBuffer text;
 	
 	public void loaded() {
-		this.isLoaded = true;
+		if(this.isLoaded)
+			this.isLoaded = false;
+		else
+			this.isLoaded = true;
+
 	}
 	
 	public Boolean getIsLoaded() {
@@ -23,6 +27,9 @@ public class EditPanelModel {
 	
 	public void setSB(String s) {
 		this.text = new StringBuffer(s);
+	}
+	public void setSB(StringBuffer sb) {
+		this.text = sb;
 	}
 	public String getSB() {
 		return this.text.toString();

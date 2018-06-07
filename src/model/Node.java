@@ -4,7 +4,6 @@ public class Node {
     public static final int DUMMY = 0;
     public static final int ADD = 1;
     public static final int DELETE = 2;
-    public static final int CHANGED = 3;
     
     public int leftIndex;
     public int rightIndex;
@@ -33,18 +32,56 @@ public class Node {
     @Override
     public String toString() {
     	StringBuffer temp = new StringBuffer();
+    	
+    	assert this.context != null;
+    	
     	if (this.flag == Node.DUMMY) {
-			return "";
+    		if(leftIndex == -1) {
+    			temp.append(leftIndex + "DUM" + rightIndex + ", " + (rightIndex + context.length()) + "\n");
+    		} else {
+    			temp.append(leftIndex + "," + (leftIndex + context.length()) + "DUM" + rightIndex + "\n");
+    		}
+    		
 		}
 		if (this.flag == Node.DELETE) {
 			temp.append(leftIndex + "," + (leftIndex + context.length()) + "d" + rightIndex + "\n");
-			temp.append("> \"" + context.toString() + "\""+ "\n");
 		} else if (this.flag == Node.ADD) {
 			temp.append(leftIndex + "a" + rightIndex + "," + (rightIndex + context.length())+ "\n");
-			temp.append("> \"" + context.toString() + "\"" + "\n");
 		}
+		
+		temp.append("> \"" + context.toString() + "\""+ "\n");
 		
 		return temp.toString();
     }
     
+    @Override
+    public boolean equals(Object o) {
+    	Node node = null;
+    	
+    	if(o instanceof Node) {
+    		node = (Node) o;
+    	} else {
+    		return super.equals(o);
+    	}
+    	
+    	if(this.flag == Node.ADD && this.rightIndex == node.rightIndex) {
+			return this.context.toString().equals(node.context.toString());
+    	}
+    	
+    	if(this.flag == Node.DELETE && this.leftIndex == node.leftIndex) {
+			return this.context.toString().equals(node.context.toString());
+    	}
+    	
+    	if(this.flag == Node.DUMMY && this.leftIndex == node.leftIndex && this.leftIndex != -1) {
+			return this.context.toString().equals(node.context.toString());
+    	}
+    	
+    	if(this.flag == Node.DUMMY && this.rightIndex == node.rightIndex && this.rightIndex != -1) {
+			return this.context.toString().equals(node.context.toString());
+    	}
+    	
+    	return false;
+    }
 }
+
+

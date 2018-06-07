@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
@@ -51,8 +52,9 @@ public class MainWindowView extends JFrame {
 	 */
 	public MainWindowView() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(10, 10, 1036, 586); // Default window size
+		this.setBounds(10, 10, 1060, 586); // Default window size
 		this.setTitle("Simple Merge - Team 5");
+		this.setLocationRelativeTo(null);
 
 		// main content pane
 		contentPane = new JPanel();
