@@ -210,7 +210,7 @@ public class LCSubsequence {
                 if(wordStart == 0) {
                     break;
                 } else {
-                    c = text.charAt(wordStart - 1);
+                    c = text.charAt(wordStart);
                 }
             }   
         }
@@ -233,7 +233,7 @@ public class LCSubsequence {
                 if(wordEnd + 1 == text.length()) {
                     break;
                 } else {
-                    c = text.charAt(wordEnd + 1);
+                    c = text.charAt(wordEnd);
                 }
             }
         }
@@ -290,7 +290,7 @@ public class LCSubsequence {
 				if(wordStart == -1) {
 					break;
 				} else {
-					c1 = text.charAt(wordStart - 1);
+					c1 = text.charAt(wordStart);
 				}
 			}	
 		} else {
