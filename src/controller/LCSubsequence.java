@@ -2,34 +2,10 @@ package controller;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
-
-import model.MatchNode;
 import model.Node;
 
 public class LCSubsequence {
 	public static LinkedList<Node> result;
-	public static HashMap<Node,Node> changedResult;
-
-	// mapping node and dummy node
-	public static HashMap<Node, Integer> getMergeMap(LinkedList<Node> diff){
-		HashMap<Node, Node> diffMap = new HashMap<Node, Node>();
-		
-		for(Node n : diff) {
-			// make dummy on left
-			if(n.flag == Node.ADD) {
-				diffMap.put(n, new Node(new StringBuffer(), n.leftIndex, -1, Node.DUMMY));
-			}
-			
-			// make dummy on right
-			if(n.flag == Node.DELETE) {
-				
-			}
-		}
-		
-		
-		return null;
-	}
 	public static LinkedList<Node> getDiff(String a, String b) {
 		result = new LinkedList<Node>();
 		result.push(new Node(new StringBuffer(), 0, 0, Node.DUMMY));
@@ -52,7 +28,7 @@ public class LCSubsequence {
 			if (lengths[x][y] == lengths[x - 1][y]) {
 				// add right text character in node
 				if (y == result.peek().rightIndex && result.peek().flag == Node.DELETE) {
-					// already node exist in same right text index
+					// already node exist in same right text index`
 						result.peek().leftIndex = x - 1;
 						result.peek().addChar(a.charAt(x - 1));
 						x--;
@@ -109,11 +85,6 @@ public class LCSubsequence {
 				y--;
 			}
 		}
-		
-		// print out node char by char 
-//		for(Node n : result) {
-//			System.out.println(n.toString());
-//		}
 		
 		LinkedList<Node> ret = new LinkedList();
 		
@@ -175,6 +146,7 @@ public class LCSubsequence {
 		for(Node n : ret) {
 			setNodeByWord(a, b, n);
 		}
+		
 		// make node word by word
 		for(Node n : ret) {
 			setDummyNodeByWord(a, b, n);
@@ -185,12 +157,8 @@ public class LCSubsequence {
 			System.out.println(n.toString());
 		}
 		
-//		changedResult = new HashMap<>();
-//		LinkedList<MatchNode> matchResult = new LinkedList();
 		
 		System.out.print("A\n");
-		
-		
 		
 		for (Node n : ret) {
 			System.out.println(n);
@@ -202,232 +170,158 @@ public class LCSubsequence {
 	}
 	
 	private static void setNodeByWord(String text1, String text2, Node node) {
-		int wordStart, wordEnd; // [wordStart, wordEnd)
-		char c;
-		
-		// if node is added
-		if(node.flag == Node.ADD) {
-			
-			// separate by words
-			// scan front-side
-			wordStart = node.rightIndex;
-			// check if rightIndex is zero
-			if (wordStart < 0 || wordStart == text2.length()) {
-				return;
-			}
-			c = text2.charAt(wordStart);
-			if(c != ' ' && c != '\n' && c != '\t' && wordStart != 0) {
-				c = text2.charAt(wordStart - 1);
-				while (c != ' ' && c != '\n' && wordStart != 0) {
-					node.addChar(c);
-					wordStart--;
+	    int wordStart = 0, wordEnd = 0; // [wordStart, wordEnd)
+	    String text = null;
+        char c;
+        
+        // separate by words
+        
+        
+        if(node.flag == Node.ADD) {
+            wordStart = node.rightIndex;
+            text = text2;
+        }
+            
+        if(node.flag == Node.DELETE) {
+            wordStart = node.leftIndex;
+            text = text1;
+        }
+        
+        // DUMMY node do nothing
+        if(node.flag == Node.DUMMY) {
+            return;
+        }
+        
+        assert wordStart == node.rightIndex || wordStart == node.leftIndex;
+        assert text != null;
+        
+        // scan front-side 
+        // check if start index is zero
+        if (wordStart < 0 || wordStart == text.length()) {
+            return;
+        }
+        c = text.charAt(wordStart);
+        if(c != ' ' && c != '\n' && c != '\t' && wordStart != 0) {
+            c = text.charAt(wordStart - 1);
+            while (c != ' ' && c != '\n' && wordStart != 0) {
+                node.addChar(c);
+                wordStart--;
 
-					if(wordStart == 0) {
-						break;
-					} else {
-						c = text2.charAt(wordStart - 1);
-					}
-				}	
-			}
-			
-			// scan back-side
-			wordEnd = wordStart + node.context.length() - 1;
-			
-			// check if wordEnd is out of index
-			if (wordEnd == text2.length() - 1) {
-				return;
-			}
-			
-			c = text2.charAt(wordEnd);
-			if(c != ' ' && c != '\n' && c != '\t' ) {
-				c = text2.charAt(wordEnd + 1);
-				while (c != ' ' && c != '\n'  && c != '\t' && wordEnd != text2.length() - 1) {
-					node.context.append(c);
-					wordEnd++;
-					
-					if(wordEnd + 1 == text2.length()) {
-						break;
-					} else {
-						c = text2.charAt(wordEnd + 1);
-					}
-				}
-			}
-			node.rightIndex = wordStart;
-		}
-		
-		// if node is deleted 
-		if(node.flag == Node.DELETE) {
-			
-			// separate by words
-			
-			// scan front-side
-			wordStart = node.leftIndex;
-			
-			// check if leftIndex is zero
-			if (wordStart < 0 || wordStart == text2.length()) {
-				return;
-			}
-			
-			c = text1.charAt(wordStart);
-			if(c != ' ' && c != '\n' && c != '\t' && wordStart != 0) {
-				c = text1.charAt(wordStart - 1);
-				while (c != ' ' && c != '\n') {
-					node.addChar(c);
-					wordStart--;
-					
-					if(wordStart == 0) {
-						break;
-					} else {
-						c = text1.charAt(wordStart - 1);
-					}
-						
-				}	
-			}
-			
-			// scan back-side
-			wordEnd = wordStart + node.context.length() - 1;
-			// check if wordEnd is out of index
-			if (wordEnd == text1.length() - 1) {
-				return;
-			}
-			
-			c = text1.charAt(wordEnd);
-			if(c != ' ' && c != '\n' && c != '\t' ) {
-				c = text1.charAt(wordEnd + 1);
-				while (c != ' ' && c != '\n'  && c != '\t' && wordEnd != text1.length() - 1) {
-					node.context.append(c);
-					wordEnd++;
-					
-					if(wordEnd + 1 == text1.length()) {
-						break;
-					} else {
-						c = text1.charAt(wordEnd + 1);
-					}
-				}
-			}
-			
-			node.leftIndex = wordStart;
-		}
+                if(wordStart == 0) {
+                    break;
+                } else {
+                    c = text.charAt(wordStart - 1);
+                }
+            }   
+        }
+        
+        // scan back-side
+        wordEnd = wordStart + node.context.length() - 1;
+        
+        // check if wordEnd is out of index
+        if (wordEnd == text.length() - 1) {
+            return;
+        }
+        
+        c = text.charAt(wordEnd);
+        if(c != ' ' && c != '\n' && c != '\t' ) {
+            c = text.charAt(wordEnd + 1);
+            while (c != ' ' && c != '\n'  && c != '\t' && wordEnd != text.length() - 1) {
+                node.context.append(c);
+                wordEnd++;
+                
+                if(wordEnd + 1 == text.length()) {
+                    break;
+                } else {
+                    c = text.charAt(wordEnd + 1);
+                }
+            }
+        }
+
+        if(node.flag == Node.ADD)
+            node.rightIndex = wordStart;
+        if(node.flag == Node.DELETE)
+            node.leftIndex  = wordStart;
+	    
 	}
 	
-	
 	private static void setDummyNodeByWord(String text1, String text2, Node node) {
-		int wordStart, wordEnd; // [wordStart, wordEnd)
+		int wordStart = 0, wordEnd = 0; // [wordStart, wordEnd)
+		String text = null;
 		char c1, c2;
 		
 		
 		if(node.flag != Node.DUMMY)
 			return;
-		// if node is added
+		
+		// init variables
 		if(node.leftIndex == -1) {
-			// separate by words
-			// scan front-side
-			wordStart = node.rightIndex;
-			// check if rightIndex is zero
-			if (wordStart <= 0 || wordStart == text2.length()) {
-				return;
-			}
-			
-			// dummy on start
-			c1 = text2.charAt(wordStart);
-			if(c1 == ' ' || c1 == '\n' || c1 == '\t')
-				return;
-			
-			c1 = text2.charAt(wordStart - 1);
-			if(c1 != ' ' && c1 != '\n' && c1 != '\t') {
-				c1 = text2.charAt(wordStart - 1);
-				while (c1 != ' ' && c1 != '\n') {
-					node.addChar(c1);
-					wordStart--;
-
-					if(wordStart == 0) {
-						break;
-					} else {
-						c1 = text2.charAt(wordStart - 1);
-					}
-				}	
-			} else {
-				return;
-			}
-						
-			// scan back-side
-			wordEnd = node.rightIndex;
-			
-			// check if wordEnd is out of index
-			if (wordEnd == text2.length() - 1) {
-				return;
-			}
-			
-			c1 = text2.charAt(wordEnd + 1);
-			while (c1 != ' ' && c1 != '\n' && wordEnd < text2.length()) {
-				node.context.append(c1);
-				wordEnd++;
-				
-				if(wordEnd == text2.length()) {
-					break;
-				} else {
-					c1 = text2.charAt(wordEnd + 1);
-				}
-			}
-			node.rightIndex = wordStart;
+		    wordStart = node.rightIndex;
+		    wordEnd   = node.rightIndex;
+		    
+		    text = text2;
+		}
+		if(node.rightIndex == -1) {
+		    wordStart = node.leftIndex;
+            wordEnd   = node.leftIndex;
+            
+		    text = text1;
 		}
 		
-		// if node is deleted 
-		if(node.rightIndex == -1) {
-			
-			// separate by words
-			
-			// scan front-side
-			wordStart = node.leftIndex;
-			
-			// check if leftIndex is zero
-			if (wordStart <= 0 || wordStart == text2.length()) {
-				return;
-			}
-			
-			c1 = text1.charAt(wordStart);
-			if(c1 == ' ' || c1 == '\n' || c1 == '\t')
-				return;
-			
-			// dummy on start
-			c1 = text1.charAt(wordStart - 1);
-			if(c1 != ' ' && c1 != '\n' && c1 != '\t') {
-				c1 = text1.charAt(wordStart - 1);
-				while (c1 != ' ' && c1 != '\n') {
-					node.addChar(c1);
-					wordStart--;
-					
-					if(wordStart == 0) {
-						break;
-					} else {
-						c1 = text1.charAt(wordStart - 1);
-					}
-						
-				}	
-			} else {
-				return;
-			}
-			
-			// scan back-side
-			wordEnd = node.leftIndex;
-			// check if wordEnd is out of index
-			if (wordEnd == text1.length() - 1) {
-				return;
-			}
-			
-			c1 = text1.charAt(wordEnd);
-			while (c1 != ' ' && c1 != '\n' && wordEnd < text1.length()) {
-				node.context.append(c1);
-				wordEnd++;
-				
-				if(wordEnd == text1.length()) {
+		assert (wordStart == node.leftIndex || wordStart == node.rightIndex);
+
+		// scan front-side
+		// check if start index is zero
+		if (wordStart <= 0 || wordStart == text.length()) {
+			return;
+		}
+		
+		// dummy on start
+		c1 = text.charAt(wordStart);
+		if(c1 == ' ' || c1 == '\n' || c1 == '\t')
+			return;
+		
+		c1 = text.charAt(wordStart - 1);
+		if(c1 != ' ' && c1 != '\n' && c1 != '\t') {
+			while (c1 != ' ' && c1 != '\n' && c1 != '\t' && wordStart >= 0 ) {
+				node.addChar(c1);
+				wordStart--;
+
+				if(wordStart == -1) {
 					break;
 				} else {
-					c1 = text1.charAt(wordEnd + 1);
+					c1 = text.charAt(wordStart - 1);
 				}
-			}
-			
-			node.leftIndex = wordStart;
+			}	
+		} else {
+			return;
 		}
+					
+		// scan back-side
+		// check if wordEnd is out of index
+		if (wordEnd == text.length() - 1) {
+			return;
+		}
+		
+		c1 = text.charAt(wordEnd);
+		while (c1 != ' ' && c1 != '\n' && c1 != '\t'&& wordEnd < text.length()) {
+			node.context.append(c1);
+			wordEnd++;
+			
+			if(wordEnd == text.length()) {
+				break;
+			} else {
+				c1 = text.charAt(wordEnd);
+			}
+		}
+		
+		// set new index
+		if(node.leftIndex == -1) {
+            node.rightIndex = wordStart;
+        }
+        if(node.rightIndex == -1) {
+            node.leftIndex = wordStart;
+        }
+        
 	}
 }
