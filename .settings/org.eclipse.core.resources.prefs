@@ -1,3 +1,16 @@
 eclipse.preferences.version=1
 encoding//src/MainWindow.java=UTF-8
 encoding//src/controller/MainWindowController.java=UTF-8
+encoding//src/controller/EditPanelController.java=UTF-8
+encoding//src/controller/LCSubsequence.java=UTF-8
+encoding//src/model/MainWindowModel.java=UTF-8
+encoding//src/model/EditPanelModel.java=UTF-8
+encoding//src/model/MatchNode.java=UTF-8
+encoding//src/model/Node.java=UTF-8
+encoding//src/view/EditPanel.java=UTF-8
+encoding//src/view/MainWindowView.java=UTF-8
+encoding//src/view/MergePanel.java=UTF-8
+encoding//src/junit/testLCSubsequence.java=UTF-8
+encoding//src/junit/testLoad.java=UTF-8
+encoding//src/junit/testSave.java=UTF-8
+

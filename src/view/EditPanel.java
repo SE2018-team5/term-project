@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentListener;
 import java.io.File;
 
 import javax.swing.BoxLayout;
@@ -90,8 +89,8 @@ public class EditPanel extends JPanel{
 	EditPanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fileDlg = new JFileChooser();
-		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt ÆÄÀÏ¸¸ º¸ÀÌ°Ô
-		fileDlg.setMultiSelectionEnabled(false);//´ÙÁß ¼±ÅÃ ºÒ°¡
+		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½
+		fileDlg.setMultiSelectionEnabled(false);//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½
 		fileDlg.setCurrentDirectory(new File(System.getProperty("user.dir") + "//" + "data"));
 
 		// three button panel
