@@ -116,11 +116,14 @@ public class EditPanelController {
 				editPanel.getBtnEdit().setText("Edit");
 				model.setIsModified(false);
 				model.setSB(editPanel.getContent());
+				mainController.view.getMergePanel().setBtnCmpEnable();
 			}
 			else {
 				editPanel.setEditorPaneEditable();
 				editPanel.getBtnEdit().setText("Editing...");
 				model.setIsModified(true);
+				mainController.model.setIsCompared(false);
+				mainController.view.getMergePanel().setBtnsUnEnable();
 			}
 		}
 
