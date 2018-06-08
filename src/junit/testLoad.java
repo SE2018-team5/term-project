@@ -23,8 +23,8 @@ class testLoad {
 	String compareStr = null;
 	
 	void setUp() {
-		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt 파일만 보이게
-		fileDlg.setMultiSelectionEnabled(false);//다중 선택 불가
+		fileDlg.setFileFilter((FileFilter) new FileNameExtensionFilter("Text file", "txt")); // .txt 파일만 보이게 
+		fileDlg.setMultiSelectionEnabled(false); //다중 선택 불가
 		fileDlg.setCurrentDirectory(new File(System.getProperty("user.dir") + "//" + "data"));
 		
 		int result = fileDlg.showOpenDialog(null);
