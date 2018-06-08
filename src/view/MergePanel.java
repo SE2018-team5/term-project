@@ -2,9 +2,11 @@ package view;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -27,6 +29,10 @@ public class MergePanel extends JPanel{
 		btnCmp = new JButton("Compare");
 		this.add(btnCmp);
 		btnCmp.setAlignmentX(Component.CENTER_ALIGNMENT);
+		ImageIcon cmpicon = new ImageIcon("img/compare.png");
+		Image cmpimg = cmpicon.getImage().getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
+		cmpicon.setImage(cmpimg);
+		btnCmp.setIcon(cmpicon);
 
 		// merging button
 		btnCpy2Left = new JButton("<- Copy to Left");
@@ -39,12 +45,21 @@ public class MergePanel extends JPanel{
 		JPanel updownPan = new JPanel();
 		updownPan.setLayout(new GridLayout(1,2));
 		
-		btnUp = new JButton("UP");
+		btnUp = new JButton();
 		updownPan.add(btnUp);
 		btnUp.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnDown = new JButton("DOWN");
+		ImageIcon upicon = new ImageIcon("img/up.png");
+		Image upimg = upicon.getImage().getScaledInstance(15, 15,  java.awt.Image.SCALE_SMOOTH);
+		upicon.setImage(upimg);
+		btnUp.setIcon(upicon);
+		
+		btnDown = new JButton();
 		updownPan.add(btnDown);
 		btnDown.setAlignmentX(Component.CENTER_ALIGNMENT);
+		ImageIcon downicon = new ImageIcon("img/down.png");
+		Image downimg = downicon.getImage().getScaledInstance(15, 15,  java.awt.Image.SCALE_SMOOTH);
+		downicon.setImage(downimg);
+		btnDown.setIcon(downicon);
 		
 		this.add(updownPan);
 		
@@ -55,40 +70,17 @@ public class MergePanel extends JPanel{
 		btnDown.setEnabled(false);
 	}
 	
-	// setBtnCmpEnable
 	public void setBtnCmpEnable() {
 		this.btnCmp.setEnabled(true);
 	}
 	
-	public void setBtnCmpDisable() {
-		this.btnCmp.setEnabled(false);
-	}
-	
-	// setBtnsEnable
-	public void setBtnsCopyUpDownEnable() {
-		this.btnCpy2Left.setEnabled(true);
-		this.btnCpy2Right.setEnabled(true);
-		btnUp.setEnabled(true);
-		btnDown.setEnabled(true);
-	}
-	
-	public void setBtnsCopyUpDownDisable() {
-		this.btnCpy2Left.setEnabled(false);
-		this.btnCpy2Right.setEnabled(false);
-		btnUp.setEnabled(false);
-		btnDown.setEnabled(false);
-	}
-	
 	public void setBtnsEnable() {
-		this.btnCmp.setEnabled(true);
 		this.btnCpy2Left.setEnabled(true);
 		this.btnCpy2Right.setEnabled(true);
 		btnUp.setEnabled(true);
 		btnDown.setEnabled(true);
 	}
-	
-	// setBtnsUnEnable
-	public void setBtnsDisable() {
+	public void setBtnsUnEnable() {
 		this.btnCmp.setEnabled(false);
 		this.btnCpy2Left.setEnabled(false);
 		this.btnCpy2Right.setEnabled(false);
